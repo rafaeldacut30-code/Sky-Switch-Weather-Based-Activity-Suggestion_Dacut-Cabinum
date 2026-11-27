@@ -13,6 +13,11 @@ L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
   attribution:
     '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
 }).addTo(map);
+// Store markers for matching location search results
+const searchResultMarkers = L.layerGroup().addTo(map);
+
+// Store markers for nearby places
+const nearbyPlaceMarkers = L.layerGroup().addTo(map);
 
 
 
@@ -49,12 +54,18 @@ let currentNearbyPlaces = [];
 // ==========================================
 
 function clearLocationMarker() {
+  // Remove the selected location marker
   if (locationMarker !== null) {
     map.removeLayer(locationMarker);
     locationMarker = null;
   }
-}
 
+  // Clear all location search result markers
+  searchResultMarkers.clearLayers();
+
+  // Clear all nearby place markers
+  nearbyPlaceMarkers.clearLayers();
+}
 
 
 // ==========================================
@@ -173,15 +184,19 @@ locationInput.addEventListener("input", function () {
 // ==========================================
 
 function displayLocationResults(results) {
-  // Clear previous suggestions
+  // Clear previous suggestions and search result markers
   locationResults.replaceChildren();
+  searchResultMarkers.clearLayers();
+
+  // Store marker coordinates for map adjustment
+  const markerCoordinates = [];
 
   // Display a heading
   const heading = document.createElement("h4");
   heading.textContent = "Select a location:";
   locationResults.appendChild(heading);
 
-  // Create a button for each matching location
+  // Create a button and marker for each matching location
   results.forEach(function (place) {
     const button = document.createElement("button");
 
@@ -199,6 +214,30 @@ function displayLocationResults(results) {
     // Display location name and administrative details
     button.textContent = uniqueDetails.join(", ");
 
+    // Get location coordinates
+    const latitude = place.latitude;
+    const longitude = place.longitude;
+
+    // Create a marker when valid coordinates are available
+    if (
+      Number.isFinite(latitude) &&
+      Number.isFinite(longitude)
+    ) {
+      const marker = L.marker([latitude, longitude]);
+
+      // Add marker to the search result marker group
+      marker.addTo(searchResultMarkers);
+
+      // Create safe popup content
+      const popupContent = document.createElement("div");
+      popupContent.textContent = uniqueDetails.join(", ");
+
+      marker.bindPopup(popupContent);
+
+      // Store coordinates for adjusting the map
+      markerCoordinates.push([latitude, longitude]);
+    }
+
     // Make the button select this location
     button.addEventListener("click", function () {
       selectLocation(place);
@@ -207,6 +246,16 @@ function displayLocationResults(results) {
     // Add the button to the results container
     locationResults.appendChild(button);
   });
+
+  // Adjust the map to show all search result markers
+  if (markerCoordinates.length === 1) {
+    map.setView(markerCoordinates[0], 10);
+  } else if (markerCoordinates.length > 1) {
+    map.fitBounds(markerCoordinates, {
+      padding: [40, 40],
+      maxZoom: 10,
+    });
+  }
 }
 
 
