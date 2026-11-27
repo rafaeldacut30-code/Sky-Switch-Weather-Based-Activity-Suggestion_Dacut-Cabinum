@@ -1042,3 +1042,121 @@ const activities = [
 
 
 
+// ==========================================
+// 17. FILTER RECOMMENDED ACTIVITIES
+// ==========================================
+// Store recommended activities
+let recommendedActivities = [];
+
+// Track current activity
+let currentActivityIndex = 0;
+
+// Get recommended activities
+function getRecommendedActivities() {
+  // Keep only nearby places that have valid names
+  const namedPlaces = filterNamedPlaces(currentNearbyPlaces);
+
+  return (
+    activities
+      .map(function (activity) {
+        // Check whether the current weather is suitable
+        const weatherMatches =
+          Array.isArray(activity.weather) &&
+          activity.weather.includes(currentWeatherType);
+
+        // Get the activity's required categories
+        const requiredCategories = Array.isArray(activity.placeCategories)
+          ? activity.placeCategories
+          : [];
+
+        // Exclude activities with unsuitable weather or no categories
+        if (!weatherMatches || requiredCategories.length === 0) {
+          return null;
+        }
+
+        // Find all named nearby places matching this activity
+        const matchedPlaces = namedPlaces.filter(function (place) {
+          const actualCategories = place?.properties?.categories;
+
+          if (!Array.isArray(actualCategories)) {
+            return false;
+          }
+
+          // Check whether an actual category matches a required category
+          return requiredCategories.some(function (requiredCategory) {
+            return actualCategories.some(function (actualCategory) {
+              return (
+                typeof actualCategory === "string" &&
+                actualCategory === requiredCategory
+              );
+            });
+          });
+        });
+
+        // Exclude activities without a matching named nearby place
+        if (matchedPlaces.length === 0) {
+          return null;
+        }
+
+        // Return the activity together with its matching nearby places
+        return {
+          ...activity,
+          matchedPlaces: matchedPlaces,
+        };
+      })
+      // Remove activities that did not pass the filters
+      .filter(function (activity) {
+        return activity !== null;
+      })
+  );
+}
+
+
+
+
+// ==========================================//
+// 18. DISPLAY ACTIVITY RECOMMENDATIONS
+// ==========================================//
+// Display one activity at a time
+function showActivityRecommendations() {
+  const activityImageContainer = document.getElementById(
+    "activityImageContainer",
+  );
+
+  const activityName = document.getElementById("activityName");
+
+  const activityDescription = document.getElementById("activityDescription");
+
+  const activityCounter = document.getElementById("activityCounter");
+
+  const nextActivityBtn = document.getElementById("nextActivityBtn");
+
+  // Get filtered activities
+  recommendedActivities = getRecommendedActivities();
+
+  // Reset activity index
+  currentActivityIndex = 0;
+
+  // Check if activities exist
+  if (recommendedActivities.length === 0) {
+    activityImageContainer.replaceChildren();
+    document.getElementById("activityPlace").replaceChildren();
+    activityName.textContent = "No Activities Found";
+
+    activityDescription.textContent =
+      "No activities match the current location and weather.";
+
+    activityCounter.textContent = "0 of 0 activities";
+
+    nextActivityBtn.disabled = true;
+
+    return;
+  }
+
+  // Display first activity
+  displayCurrentActivity();
+}
+
+
+
+
