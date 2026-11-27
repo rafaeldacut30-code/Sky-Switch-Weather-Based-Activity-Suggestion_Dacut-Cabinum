@@ -557,3 +557,116 @@ footer span {
 }
 
 
+/* 14. SMALL SCREEN DESIGN */
+
+@media (max-width: 500px) {
+
+    .logo {
+        font-size: 1.5rem;
+        gap: 8px;
+    }
+
+    .logo::before {
+        width: 36px;
+        height: 36px;
+        font-size: 1.4rem;
+    }
+
+    .navbar nav {
+        gap: 4px;
+    }
+
+    .navbar nav a {
+        padding: 10px 12px;
+        font-size: 0.8rem;
+    }
+
+    .left-column,
+    .right-column {
+        padding: 18px;
+    }
+
+    .search-controls {
+        flex-direction: column;
+    }
+
+    .weather-details {
+        grid-template-columns: 1fr;
+    }
+
+    #map {
+        height: 350px;
+    }
+
+    .activity-controls {
+        flex-wrap: wrap;
+    }
+
+}
+
+
+
+/* LOCATION SEARCH RESULTS */
+
+.location-results {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 15px;
+  width: 100%;
+}
+
+/* Results heading */
+.location-results h4 {
+  margin: 0 0 4px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+/* Individual location buttons */
+.location-results button {
+  width: 100%;
+  padding: 12px 15px;
+
+  text-align: left;
+  font-size: 14px;
+  line-height: 1.5;
+
+  background-color: #f5f7fa;
+  color: #222;
+
+  border: 1px solid #dce1e8;
+  border-radius: 8px;
+
+  cursor: pointer;
+  transition: background-color 0.2s ease,
+              border-color 0.2s ease;
+}
+
+/* Hover effect */
+.location-results button:hover {
+  background-color: #e8f1ff;
+  border-color: #3985d6;
+}
+
+/* Keyboard focus */
+.location-results button:focus-visible {
+  outline: 2px solid #3985d6;
+  outline-offset: 2px;
+}
+
+
+/* Activity Image Container */
+#activityImageContainer {
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+}
+
+/* Activity Image */
+#activityImageContainer img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
