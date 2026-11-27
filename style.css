@@ -489,3 +489,34 @@ body {
 }
 
 
+/* 12. FOOTER */
+
+footer {
+    background: #f1f8f4;
+    border-top: 2px solid #e3eee6;
+    text-align: center;
+    padding: 22px;
+}
+
+/* GREEN FOOTER BRANDING */
+
+footer p {
+    display: inline-block;
+    color: #159447;
+    font-weight: 800;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+    padding: 7px 15px;
+    margin: 0 0 8px;
+    border: 2px solid #20ae59;
+    border-radius: 8px;
+    background: #ffffff;
+}
+
+footer span {
+    display: block;
+    color: #718096;
+    font-size: 0.85rem;
+}
+
+
