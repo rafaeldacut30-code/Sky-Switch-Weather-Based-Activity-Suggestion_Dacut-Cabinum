@@ -409,3 +409,67 @@ async function getCurrentWeather(latitude, longitude) {
 
 
 
+// ==========================================
+// 12. DISPLAY CURRENT WEATHER
+// ==========================================
+
+async function showCurrentWeather(cityName, latitude, longitude) {
+  // Get weather information
+  const data = await getCurrentWeather(latitude, longitude);
+
+  // Detect weather category
+  currentWeatherType = detectWeatherType(data.weather[0].main);
+
+  console.log("Detected weather type:", currentWeatherType);
+
+  // Get weather HTML elements
+  const weatherIcon = document.querySelector(".weather-icon");
+  const cityTitle = document.querySelector(".weather-information h3");
+  const temperature = document.querySelector(".temperature");
+  const description = document.querySelector(".weather-description");
+
+  // Display city name
+  cityTitle.textContent = cityName;
+
+  // Display temperature
+  temperature.textContent = `${data.main.temp.toFixed(1)}°C`;
+
+  // Display weather description
+  description.textContent = data.weather[0].description;
+
+  // Display weather icon
+  const iconCode = data.weather[0].icon;
+
+  const iconImage = document.createElement("img");
+
+  iconImage.src = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
+
+  iconImage.alt = data.weather[0].description;
+  iconImage.style.width = "85px";
+
+  weatherIcon.replaceChildren(iconImage);
+
+  // Get weather detail elements
+  const weatherValues = document.querySelectorAll(
+    ".weather-details .weather-detail strong",
+  );
+
+  // Display feels-like temperature
+  if (weatherValues[0]) {
+    weatherValues[0].textContent = `${data.main.feels_like.toFixed(1)}°C`;
+  }
+
+  // Display humidity
+  if (weatherValues[1]) {
+    weatherValues[1].textContent = `${data.main.humidity}%`;
+  }
+
+  // Display wind speed
+  if (weatherValues[2]) {
+    weatherValues[2].textContent = `${data.wind.speed} m/s`;
+  }
+}
+
+
+
+
