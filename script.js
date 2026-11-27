@@ -168,3 +168,47 @@ locationInput.addEventListener("input", function () {
 
 
 
+// ==========================================
+// 8. DISPLAY LOCATION SEARCH RESULTS
+// ==========================================
+
+function displayLocationResults(results) {
+  // Clear previous suggestions
+  locationResults.replaceChildren();
+
+  // Display a heading
+  const heading = document.createElement("h4");
+  heading.textContent = "Select a location:";
+  locationResults.appendChild(heading);
+
+  // Create a button for each matching location
+  results.forEach(function (place) {
+    const button = document.createElement("button");
+
+    // Build the location details
+    const details = [
+      place.name,
+      place.admin2,
+      place.admin1,
+      place.country,
+    ].filter(Boolean);
+
+    // Remove duplicate details
+    const uniqueDetails = [...new Set(details)];
+
+    // Display location name and administrative details
+    button.textContent = uniqueDetails.join(", ");
+
+    // Make the button select this location
+    button.addEventListener("click", function () {
+      selectLocation(place);
+    });
+
+    // Add the button to the results container
+    locationResults.appendChild(button);
+  });
+}
+
+
+
+
