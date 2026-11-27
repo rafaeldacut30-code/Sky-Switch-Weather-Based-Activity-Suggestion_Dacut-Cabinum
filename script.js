@@ -473,3 +473,38 @@ async function showCurrentWeather(cityName, latitude, longitude) {
 
 
 
+// ==========================================
+// 13. GET WEATHER FORECAST
+// ==========================================
+
+async function getWeatherForecast(latitude, longitude) {
+  const apiKey = apiKeyInput.value.trim();
+
+  // Validate the OpenWeather API key
+  if (apiKey === "") {
+    throw new Error("Please enter your OpenWeather API key.");
+  }
+
+  // Create forecast API URL
+  const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&units=metric&appid=${apiKey}`;
+
+  // Send request
+  const response = await fetch(url);
+
+  if (!response.ok) {
+    if (response.status === 401) {
+      throw new Error("Invalid OpenWeather API key.");
+    }
+
+    throw new Error("Unable to retrieve weather forecast.");
+  }
+
+  // Convert response to JSON
+  const data = await response.json();
+
+  return data;
+}
+
+
+
+
