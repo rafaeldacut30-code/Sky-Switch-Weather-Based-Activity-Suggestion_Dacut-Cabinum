@@ -19,6 +19,59 @@ const searchResultMarkers = L.layerGroup().addTo(map);
 // Store markers for nearby places
 const nearbyPlaceMarkers = L.layerGroup().addTo(map);
 
+// ==========================================
+// CUSTOM MAP MARKER DESIGNS
+// ==========================================
+
+// Blue marker for the selected location
+const selectedLocationIcon = L.divIcon({
+  className: "custom-map-marker",
+  html: '<div style="background-color: #2563eb; width: 18px; height: 18px; border: 3px solid white; border-radius: 50%; box-shadow: 0 2px 6px rgba(0,0,0,0.4);"></div>',
+  iconSize: [24, 24],
+  iconAnchor: [12, 12],
+  popupAnchor: [0, -12],
+});
+
+// Green marker for nearby places
+const nearbyPlaceIcon = L.divIcon({
+  className: "custom-map-marker",
+  html: '<div style="background-color: #16a34a; width: 12px; height: 12px; border: 3px solid white; border-radius: 50%; box-shadow: 0 2px 6px rgba(0,0,0,0.4);"></div>',
+  iconSize: [18, 18],
+  iconAnchor: [9, 9],
+  popupAnchor: [0, -9],
+});
+
+// Orange marker for location search results
+const searchResultIcon = L.divIcon({
+  className: "custom-map-marker",
+  html: '<div style="background-color: #f59e0b; width: 14px; height: 14px; border: 3px solid white; border-radius: 50%; box-shadow: 0 2px 6px rgba(0,0,0,0.4);"></div>',
+  iconSize: [20, 20],
+  iconAnchor: [10, 10],
+  popupAnchor: [0, -10],
+});
+
+
+// ==========================================
+// MAP MARKER LEGEND
+// ==========================================
+
+const mapLegend = L.control({ position: "bottomright" });
+
+mapLegend.onAdd = function () {
+  const div = L.DomUtil.create("div", "map-legend");
+
+  div.innerHTML = `
+    <strong>Map Legend</strong>
+    <div><span class="legend-dot selected-dot"></span> Selected Location</div>
+    <div><span class="legend-dot nearby-dot"></span> Nearby Places</div>
+    <div><span class="legend-dot search-dot"></span> Search Results</div>
+  `;
+
+  return div;
+};
+
+mapLegend.addTo(map);
+
 
 
 // ==========================================
@@ -254,9 +307,13 @@ function displayLocationResults(locationMatches, localPlaceMatches = []) {
       Number.isFinite(latitude) &&
       Number.isFinite(longitude)
     ) {
-      const marker = L.marker([latitude, longitude]);
 
-      marker.addTo(searchResultMarkers);
+      // Create an orange marker for the search result
+    const marker = L.marker([latitude, longitude], {
+     icon: searchResultIcon,
+});
+
+marker.addTo(searchResultMarkers);
 
       // Create safe popup content
       const popupContent = document.createElement("div");
@@ -318,9 +375,13 @@ async function selectLocation(place) {
     // Update the map to the selected location
     map.setView([latitude, longitude], 13);
 
-    // Add a marker to the selected location
-    locationMarker = L.marker([latitude, longitude]).addTo(map);
-    locationMarker.bindPopup(locationName).openPopup();
+  // Add a custom blue marker to the selected location
+locationMarker = L.marker([latitude, longitude], {
+  icon: selectedLocationIcon,
+}).addTo(map);
+
+// Display the selected location name
+locationMarker.bindPopup(locationName).openPopup();
 
     // Load current weather
     await showCurrentWeather(place.name, latitude, longitude);
@@ -395,6 +456,9 @@ async function selectLocation(place) {
 // ==========================================
 
 async function selectLocalPlace(place) {
+  // Clear previous weather, map, and activity results
+  clearPreviousResults();
+
   // Get the selected place coordinates
   const latitude = place.lat;
   const longitude = place.lon;
@@ -409,57 +473,85 @@ async function selectLocalPlace(place) {
     return;
   }
 
-  // Clear previous search and nearby markers
-  clearLocationMarker();
-
-  // Clear previous search results
-  locationResults.replaceChildren();
-
   // Get the place name and address
   const placeName = place.name || "Selected local place";
 
   const address =
     place.address_line2 || place.address_line1 || "";
 
-  const locationName = address
-    ? `${placeName}, ${address}`
-    : placeName;
-
-  // Add a marker for the selected local place
-  locationMarker = L.marker([latitude, longitude]).addTo(map);
-
-  // Create safe popup content
-  const popupContent = document.createElement("div");
-  popupContent.textContent = locationName;
-
-  locationMarker.bindPopup(popupContent).openPopup();
-
-  // Zoom in to the selected place
-  map.setView([latitude, longitude], 16);
-
   try {
-    // Display loading message
-    locationMessage.textContent =
-      `Loading weather for ${placeName}...`;
+    locationMessage.textContent = `Loading ${placeName}...`;
 
-    // Load current weather
+    // Zoom in to the selected place
+    map.setView([latitude, longitude], 16);
+
+    // Create an orange marker for the selected establishment
+    locationMarker = L.marker([latitude, longitude], {
+      icon: searchResultIcon,
+    }).addTo(map);
+
+    // Create safe popup content
+    const popupContent = document.createElement("div");
+
+    popupContent.textContent = address
+      ? `${placeName}, ${address}`
+      : placeName;
+
+    locationMarker.bindPopup(popupContent).openPopup();
+
+    // Load current weather using the establishment coordinates
     await showCurrentWeather(placeName, latitude, longitude);
 
     // Load weather forecast
     await showWeatherForecast(latitude, longitude);
 
+    // Track whether nearby places loaded successfully
+    let placesLoaded = true;
+
+    try {
+      // Retrieve nearby places from Geoapify
+      const localPlaces = await getLocalPlaces(latitude, longitude);
+
+      // Store the retrieved nearby places
+      currentNearbyPlaces = Array.isArray(localPlaces)
+        ? localPlaces
+        : [];
+
+      // Display markers for nearby places
+      displayNearbyPlaceMarkers(currentNearbyPlaces);
+
+      console.log(
+        "Nearby places retrieved:",
+        currentNearbyPlaces.length
+      );
+    } catch (error) {
+      // Handle nearby places errors
+      placesLoaded = false;
+      currentNearbyPlaces = [];
+
+      console.error("Geoapify Error:", error.message);
+    }
+
+    // Display activity recommendations
+    showActivityRecommendations();
+
     // Update the location message
-    locationMessage.textContent =
-      `Local place found: ${locationName}`;
+    if (placesLoaded) {
+      locationMessage.textContent =
+        `Local place found: ${placeName}`;
+    } else {
+      locationMessage.textContent =
+        `Local place found: ${placeName}, but nearby places could not be loaded. Check your Geoapify API key.`;
+    }
 
   } catch (error) {
-    // Handle weather loading errors
-    locationMessage.textContent =
-      `Place found, but weather could not be loaded: ${error.message}`;
+    // Handle selection errors
+    locationMessage.textContent = error.message;
 
-    console.error("Local place weather error:", error);
+    console.error("Local place selection error:", error);
   }
 }
+
 
 
 
@@ -816,6 +908,8 @@ function filterNamedPlaces(places) {
 
 
 
+
+
 // ==========================================
 // DISPLAY NEARBY PLACE MARKERS
 // ==========================================
@@ -850,17 +944,33 @@ function displayNearbyPlaceMarkers(places) {
       properties.categories?.[0] ||
       "Nearby place";
 
-    // Create the nearby place marker
-    const marker = L.marker([latitude, longitude]);
+    // Get the place address
+    const placeAddress =
+      properties.formatted ||
+      properties.address_line1 ||
+      "Address not available";
+
+    // Create the nearby place marker with its custom icon
+    const marker = L.marker([latitude, longitude], {
+      icon: nearbyPlaceIcon,
+    });
 
     // Add the marker to the nearby places marker group
     marker.addTo(nearbyPlaceMarkers);
 
     // Create popup content
     const popupContent = document.createElement("div");
-    popupContent.textContent = placeName;
 
-    // Display the place name when the marker is clicked
+    const nameElement = document.createElement("strong");
+    nameElement.textContent = placeName;
+
+    const addressElement = document.createElement("p");
+    addressElement.textContent = placeAddress;
+
+    popupContent.appendChild(nameElement);
+    popupContent.appendChild(addressElement);
+
+    // Display place information when the marker is clicked
     marker.bindPopup(popupContent);
   });
 
@@ -870,6 +980,7 @@ function displayNearbyPlaceMarkers(places) {
     nearbyPlaceMarkers.getLayers().length
   );
 }
+
 
 
 
