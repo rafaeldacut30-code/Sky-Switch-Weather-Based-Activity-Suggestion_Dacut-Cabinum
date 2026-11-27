@@ -179,11 +179,12 @@ locationInput.addEventListener("input", function () {
 
 
 
+
 // ==========================================
-// 8. DISPLAY LOCATION SEARCH RESULTS
+// 8. DISPLAY LOCATION AND LOCAL PLACE RESULTS
 // ==========================================
 
-function displayLocationResults(results) {
+function displayLocationResults(locationMatches, localPlaceMatches = []) {
   // Clear previous suggestions and search result markers
   locationResults.replaceChildren();
   searchResultMarkers.clearLayers();
@@ -191,16 +192,18 @@ function displayLocationResults(results) {
   // Store marker coordinates for map adjustment
   const markerCoordinates = [];
 
-  // Display a heading
+  // Display heading
   const heading = document.createElement("h4");
-  heading.textContent = "Select a location:";
+  heading.textContent = "Search results:";
   locationResults.appendChild(heading);
 
-  // Create a button and marker for each matching location
-  results.forEach(function (place) {
+  // ==========================================
+  // DISPLAY GEOGRAPHIC LOCATIONS
+  // ==========================================
+
+  locationMatches.forEach(function (place) {
     const button = document.createElement("button");
 
-    // Build the location details
     const details = [
       place.name,
       place.admin2,
@@ -208,55 +211,81 @@ function displayLocationResults(results) {
       place.country,
     ].filter(Boolean);
 
-    // Remove duplicate details
     const uniqueDetails = [...new Set(details)];
 
-    // Display location name and administrative details
     button.textContent = uniqueDetails.join(", ");
 
-    // Get location coordinates
-    const latitude = place.latitude;
-    const longitude = place.longitude;
-
-    // Create a marker when valid coordinates are available
-    if (
-      Number.isFinite(latitude) &&
-      Number.isFinite(longitude)
-    ) {
-      const marker = L.marker([latitude, longitude]);
-
-      // Add marker to the search result marker group
-      marker.addTo(searchResultMarkers);
-
-      // Create safe popup content
-      const popupContent = document.createElement("div");
-      popupContent.textContent = uniqueDetails.join(", ");
-
-      marker.bindPopup(popupContent);
-
-      // Store coordinates for adjusting the map
-      markerCoordinates.push([latitude, longitude]);
-    }
+    // Identify this as a geographic location
+    button.dataset.type = "location";
 
     // Make the button select this location
     button.addEventListener("click", function () {
       selectLocation(place);
     });
 
-    // Add the button to the results container
     locationResults.appendChild(button);
   });
 
-  // Adjust the map to show all search result markers
+  // ==========================================
+  // DISPLAY SPECIFIC LOCAL PLACES
+  // ==========================================
+
+  localPlaceMatches.forEach(function (place) {
+    const button = document.createElement("button");
+
+    // Build local place details
+    const placeName = place.name || "Unnamed place";
+
+    const address = place.address_line2 || place.address_line1 || "";
+
+    button.textContent = address
+      ? `${placeName}, ${address}`
+      : placeName;
+
+    // Identify this as a local place
+    button.dataset.type = "local-place";
+
+    // Get coordinates
+    const latitude = place.lat;
+    const longitude = place.lon;
+
+    // Create a marker if coordinates are valid
+    if (
+      Number.isFinite(latitude) &&
+      Number.isFinite(longitude)
+    ) {
+      const marker = L.marker([latitude, longitude]);
+
+      marker.addTo(searchResultMarkers);
+
+      // Create safe popup content
+      const popupContent = document.createElement("div");
+      popupContent.textContent = button.textContent;
+
+      marker.bindPopup(popupContent);
+
+      markerCoordinates.push([latitude, longitude]);
+    }
+
+    // Select and locate this local place
+    button.addEventListener("click", function () {
+      selectLocalPlace(place);
+    });
+
+    locationResults.appendChild(button);
+  });
+
+  // Adjust map to show search result markers
   if (markerCoordinates.length === 1) {
-    map.setView(markerCoordinates[0], 10);
+    map.setView(markerCoordinates[0], 15);
   } else if (markerCoordinates.length > 1) {
     map.fitBounds(markerCoordinates, {
       padding: [40, 40],
-      maxZoom: 10,
+      maxZoom: 12,
     });
   }
 }
+
 
 
 
@@ -360,6 +389,80 @@ async function selectLocation(place) {
 
 
 
+
+// ==========================================
+// SELECT A LOCAL PLACE
+// ==========================================
+
+async function selectLocalPlace(place) {
+  // Get the selected place coordinates
+  const latitude = place.lat;
+  const longitude = place.lon;
+
+  // Check whether coordinates are valid
+  if (
+    !Number.isFinite(latitude) ||
+    !Number.isFinite(longitude)
+  ) {
+    locationMessage.textContent =
+      "This place does not have valid coordinates.";
+    return;
+  }
+
+  // Clear previous search and nearby markers
+  clearLocationMarker();
+
+  // Clear previous search results
+  locationResults.replaceChildren();
+
+  // Get the place name and address
+  const placeName = place.name || "Selected local place";
+
+  const address =
+    place.address_line2 || place.address_line1 || "";
+
+  const locationName = address
+    ? `${placeName}, ${address}`
+    : placeName;
+
+  // Add a marker for the selected local place
+  locationMarker = L.marker([latitude, longitude]).addTo(map);
+
+  // Create safe popup content
+  const popupContent = document.createElement("div");
+  popupContent.textContent = locationName;
+
+  locationMarker.bindPopup(popupContent).openPopup();
+
+  // Zoom in to the selected place
+  map.setView([latitude, longitude], 16);
+
+  try {
+    // Display loading message
+    locationMessage.textContent =
+      `Loading weather for ${placeName}...`;
+
+    // Load current weather
+    await showCurrentWeather(placeName, latitude, longitude);
+
+    // Load weather forecast
+    await showWeatherForecast(latitude, longitude);
+
+    // Update the location message
+    locationMessage.textContent =
+      `Local place found: ${locationName}`;
+
+  } catch (error) {
+    // Handle weather loading errors
+    locationMessage.textContent =
+      `Place found, but weather could not be loaded: ${error.message}`;
+
+    console.error("Local place weather error:", error);
+  }
+}
+
+
+
 // ==========================================
 // 10. SEARCH LOCATION
 // ==========================================
@@ -373,7 +476,6 @@ async function searchLocation() {
   // Check if location is empty
   if (location === "") {
     locationMessage.textContent = "Please enter a location.";
-
     return;
   }
 
@@ -383,39 +485,56 @@ async function searchLocation() {
   if (apiKey === "") {
     locationMessage.textContent =
       "Please enter your OpenWeather API key first.";
-
     return;
   }
 
   try {
-    locationMessage.textContent = "Searching location...";
+    locationMessage.textContent = "Searching locations and local places...";
 
-    // Create Geocoding API URL
+    // ==========================================
+    // SEARCH GEOGRAPHIC LOCATIONS
+    // ==========================================
+
     const url = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(location)}&count=10&language=en&format=json&countryCode=PH`;
 
-    // Send request
     const response = await fetch(url);
 
     if (!response.ok) {
       throw new Error("Unable to search for location.");
     }
 
-    // Convert response to JSON
     const data = await response.json();
 
-    // Check if location exists
-    if (!data.results || data.results.length === 0) {
-      locationMessage.textContent = "Location not found. Try another place.";
+    const locationMatches = Array.isArray(data.results)
+      ? data.results
+      : [];
 
+    // ==========================================
+    // SEARCH SPECIFIC LOCAL PLACES
+    // ==========================================
+
+    const localPlaceMatches = await searchLocalPlace(location);
+
+    // Display both search results in the console
+    console.log("Location matches:", locationMatches);
+    console.log("Local place matches:", localPlaceMatches);
+
+    // Check whether any results were found
+    if (
+      locationMatches.length === 0 &&
+      localPlaceMatches.length === 0
+    ) {
+      locationMessage.textContent =
+        "No matching locations or local places found.";
       return;
     }
 
-    // Display all matching Philippine locations
-    displayLocationResults(data.results);
+    // Display geographic location results for now
+      displayLocationResults(locationMatches, localPlaceMatches);
 
-    // Ask the user to select a location
     locationMessage.textContent =
-      "Please select the correct location from the results.";
+      "Search completed. Select a result.";
+
   } catch (error) {
     locationMessage.textContent = error.message;
 
@@ -630,6 +749,49 @@ async function getLocalPlaces(latitude, longitude) {
   // Return the filtered places
   return filteredPlaces;
 }
+
+
+
+// ==========================================
+// SEARCH FOR SPECIFIC LOCAL PLACES
+// ==========================================
+
+async function searchLocalPlace(query) {
+  const apiKey = getGeoapifyKey();
+
+  if (!apiKey) {
+    throw new Error("Please enter your Geoapify API key.");
+  }
+
+  // Create the Geoapify text search URL
+  let url =
+    `https://api.geoapify.com/v1/geocode/search?text=${encodeURIComponent(query)}&format=json&limit=10&filter=countrycode:ph&apiKey=${apiKey}`;
+
+  // If a location is already selected, prioritize places near it
+  if (locationMarker !== null) {
+    const coordinates = locationMarker.getLatLng();
+
+    url =
+      `https://api.geoapify.com/v1/geocode/search?text=${encodeURIComponent(query)}&format=json&limit=10&filter=circle:${coordinates.lng},${coordinates.lat},10000&apiKey=${apiKey}`;
+  }
+
+  // Send the search request
+  const response = await fetch(url);
+
+  if (!response.ok) {
+    throw new Error(
+      `Unable to search local places. Geoapify returned status ${response.status}.`
+    );
+  }
+
+  // Convert the response into JSON
+  const data = await response.json();
+
+  // Return the matching local places
+  return Array.isArray(data.results) ? data.results : [];
+}
+
+
 
 // ==========================================
 // FILTER PLACES WITH VALID NAMES
