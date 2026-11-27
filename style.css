@@ -520,3 +520,40 @@ footer span {
 }
 
 
+/* 13. RESPONSIVE DESIGN */
+
+@media (max-width: 850px) {
+
+    .main-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .navbar {
+        padding: 20px;
+        flex-direction: column;
+        gap: 18px;
+    }
+
+    .navbar nav {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .left-column {
+        padding: 25px;
+    }
+
+    .left-column::after {
+        display: none;
+    }
+
+    .right-column {
+        padding: 25px;
+    }
+
+    .left-column {
+        border-bottom: 1px solid #dce7ed;
+    }
+}
+
+
