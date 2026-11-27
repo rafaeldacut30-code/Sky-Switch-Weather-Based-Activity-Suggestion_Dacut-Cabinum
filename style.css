@@ -1,0 +1,67 @@
+
+
+/* 1. GENERAL SETTINGS */
+
+:root {
+    font-family: Arial, sans-serif;
+    color: #19334a;
+    background: #ffffff;
+}
+
+* {
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+}
+
+
+/* 2. NAVIGATION BAR */
+
+.navbar {
+    min-height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 4%;
+    background: #ffffff;
+    border-bottom: 1px solid #e5edf1;
+    box-shadow: 0 4px 14px rgba(25, 51, 74, 0.06);
+    position: relative;
+    z-index: 10;
+}
+
+
+/* SKY SWITCH LOGO */
+
+.logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 9px 15px;
+    color: #159447;
+    font-size: 1.9rem;
+    font-weight: 800;
+    letter-spacing: -1px;
+    text-decoration: none;
+    border: 2px solid #20ae59;
+    border-radius: 12px;
+    background: #f1fbf4;
+}
+
+.logo::before {
+    content: "☀";
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #dff8e8;
+    color: #159447;
+    border-radius: 10px;
+    font-size: 1.7rem;
+}
+
+
