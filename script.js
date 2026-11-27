@@ -508,3 +508,98 @@ async function getWeatherForecast(latitude, longitude) {
 
 
 
+// ==========================================
+// 14. GEOAPIFY PLACES API
+// ==========================================
+
+async function getLocalPlaces(latitude, longitude) {
+  const apiKey = getGeoapifyKey();
+
+  if (!apiKey) {
+    throw new Error("Please enter your Geoapify API key.");
+  }
+
+  // Request categories used by the activity database
+  const categories =
+    "activity.community_center,catering.cafe,catering.restaurant,catering.food_court,commercial.marketplace,commercial.hobby.games,commercial.hobby.art,education.library,entertainment.museum,entertainment.culture,entertainment.cinema,entertainment.amusement_arcade,entertainment.bowling_alley,leisure.park,leisure.picnic,natural.coastal,natural.forest,natural.mountain,natural.protected_area,natural.water.sea,national_park,tourism.attraction,tourism.sights,sport.fishing,sport.sports_centre,sport.sports_hall,beach";
+
+  // Create the Geoapify Places API URL
+  const url = `https://api.geoapify.com/v2/places?categories=${categories}&filter=circle:${longitude},${latitude},10000&limit=500&apiKey=${apiKey}`;
+
+  // Send the API request
+  const response = await fetch(url);
+
+  // Check if the request was successful
+  if (!response.ok) {
+    throw new Error(
+      `Unable to retrieve local places. Geoapify returned status ${response.status}.`,
+    );
+  }
+
+  // Convert the response into JSON
+  const data = await response.json();
+
+  // Get the retrieved places
+  const places = Array.isArray(data.features) ? data.features : [];
+
+  // Remove places explicitly marked as private or restricted
+  const filteredPlaces = places.filter((place) => {
+    const properties = place.properties || {};
+    const placeCategories = Array.isArray(properties.categories)
+      ? properties.categories
+      : [];
+    const access = properties.access;
+
+    // Check restricted access categories
+    const hasRestrictedCategory = placeCategories.some(
+      (category) =>
+        category === "access_limited" || category.startsWith("access_limited."),
+    );
+
+    // Check explicit access information
+    const restrictedAccessValues = ["private", "no", "customers", "restricted"];
+
+    const hasRestrictedAccess =
+      typeof access === "string" &&
+      restrictedAccessValues.includes(access.toLowerCase());
+
+    // Keep only places without an explicit restriction
+    return !hasRestrictedCategory && !hasRestrictedAccess;
+  });
+
+  // Display filtering results in the console
+  console.log("Total places retrieved:", places.length);
+  console.log("Places after access filtering:", filteredPlaces.length);
+  console.log(
+    "Restricted places removed:",
+    places.length - filteredPlaces.length,
+  );
+
+  // Return the filtered places
+  return filteredPlaces;
+}
+
+// ==========================================
+// FILTER PLACES WITH VALID NAMES
+// ==========================================
+// Keep named places for readable console output
+function filterNamedPlaces(places) {
+  if (!Array.isArray(places)) {
+    return [];
+  }
+
+  return places.filter(function (place) {
+    const properties = place && place.properties;
+
+    return (
+      properties &&
+      typeof properties.name === "string" &&
+      properties.name.trim() !== "" &&
+      Array.isArray(properties.categories)
+    );
+  });
+}
+
+
+
+
