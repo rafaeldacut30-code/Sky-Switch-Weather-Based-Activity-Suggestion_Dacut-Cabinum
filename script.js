@@ -142,3 +142,29 @@ function clearPreviousResults() {
 
 
 
+// ==========================================
+// 7. SEARCH LOCATION
+// ==========================================
+
+// Search button event listener
+searchBtn.addEventListener("click", searchLocation);
+
+// ==========================================
+// LOCATION INPUT LISTENER
+// ==========================================
+
+// Detect changes in the location search input
+locationInput.addEventListener("input", function () {
+  // Remove old location suggestions when the search changes
+  locationResults.replaceChildren();
+
+  if (locationInput.value.trim() === "") {
+    clearLocationMarker();
+
+    locationMessage.textContent = "Search for a Philippine location.";
+  }
+});
+
+
+
+
