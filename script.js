@@ -84,3 +84,61 @@ function detectWeatherType(weatherMain) {
 
 
 
+// ==========================================
+// 6. CLEAR PREVIOUS SEARCH RESULTS
+// ==========================================
+
+function clearPreviousResults() {
+  // Clear previous location search results
+  locationResults.replaceChildren();
+
+  // Clear previous nearby places and weather category
+  currentNearbyPlaces = [];
+  currentWeatherType = "";
+
+  // Clear previous recommendations
+  recommendedActivities = [];
+  currentActivityIndex = 0;
+
+  // Clear the map marker
+  clearLocationMarker();
+
+  // Clear current weather information
+  document.querySelector(".weather-information h3").textContent = "";
+  document.querySelector(".temperature").textContent = "";
+  document.querySelector(".weather-description").textContent = "";
+
+  // Clear current weather icon
+  document.querySelector(".weather-icon").replaceChildren();
+
+  // Clear weather details
+  document
+    .querySelectorAll(".weather-details .weather-detail strong")
+    .forEach(function (element) {
+      element.textContent = "";
+    });
+
+  // Clear previous weather forecast
+  document.getElementById("forecastDetails").replaceChildren();
+
+  // Clear previous activity card
+  document.getElementById("activityImageContainer").replaceChildren();
+
+  document.getElementById("activityName").textContent = "";
+
+  document.getElementById("activityDescription").textContent = "";
+
+  document.getElementById("activityPlace").replaceChildren();
+
+  document.getElementById("activityCounter").textContent = "0 of 0 activities";
+
+  // Disable Next Activity button
+  const nextActivityBtn = document.getElementById("nextActivityBtn");
+
+  nextActivityBtn.disabled = true;
+  nextActivityBtn.textContent = "Next Activity →";
+}
+
+
+
+
