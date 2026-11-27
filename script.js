@@ -19,6 +19,9 @@ const searchResultMarkers = L.layerGroup().addTo(map);
 // Store markers for nearby places
 const nearbyPlaceMarkers = L.layerGroup().addTo(map);
 
+
+
+
 // ==========================================
 // CUSTOM MAP MARKER DESIGNS
 // ==========================================
@@ -51,6 +54,8 @@ const searchResultIcon = L.divIcon({
 });
 
 
+
+
 // ==========================================
 // MAP MARKER LEGEND
 // ==========================================
@@ -74,6 +79,7 @@ mapLegend.addTo(map);
 
 
 
+
 // ==========================================
 // 2. GET HTML ELEMENTS
 // ==========================================
@@ -92,6 +98,7 @@ function getGeoapifyKey() {
 
 
 
+
 // ==========================================
 // 3. GLOBAL VARIABLES
 // ==========================================
@@ -99,6 +106,7 @@ function getGeoapifyKey() {
 let locationMarker = null;
 let currentWeatherType = "";
 let currentNearbyPlaces = [];
+
 
 
 
@@ -119,6 +127,9 @@ function clearLocationMarker() {
   // Clear all nearby place markers
   nearbyPlaceMarkers.clearLayers();
 }
+
+
+
 
 
 // ==========================================
@@ -232,7 +243,6 @@ locationInput.addEventListener("input", function () {
 
 
 
-
 // ==========================================
 // 8. DISPLAY LOCATION AND LOCAL PLACE RESULTS
 // ==========================================
@@ -249,6 +259,9 @@ function displayLocationResults(locationMatches, localPlaceMatches = []) {
   const heading = document.createElement("h4");
   heading.textContent = "Search results:";
   locationResults.appendChild(heading);
+
+
+
 
   // ==========================================
   // DISPLAY GEOGRAPHIC LOCATIONS
@@ -279,6 +292,9 @@ function displayLocationResults(locationMatches, localPlaceMatches = []) {
     locationResults.appendChild(button);
   });
 
+
+
+
   // ==========================================
   // DISPLAY SPECIFIC LOCAL PLACES
   // ==========================================
@@ -291,9 +307,7 @@ function displayLocationResults(locationMatches, localPlaceMatches = []) {
 
     const address = place.address_line2 || place.address_line1 || "";
 
-    button.textContent = address
-      ? `${placeName}, ${address}`
-      : placeName;
+    button.textContent = address ? `${placeName}, ${address}` : placeName;
 
     // Identify this as a local place
     button.dataset.type = "local-place";
@@ -303,17 +317,13 @@ function displayLocationResults(locationMatches, localPlaceMatches = []) {
     const longitude = place.lon;
 
     // Create a marker if coordinates are valid
-    if (
-      Number.isFinite(latitude) &&
-      Number.isFinite(longitude)
-    ) {
-
+    if (Number.isFinite(latitude) && Number.isFinite(longitude)) {
       // Create an orange marker for the search result
-    const marker = L.marker([latitude, longitude], {
-     icon: searchResultIcon,
-});
+      const marker = L.marker([latitude, longitude], {
+        icon: searchResultIcon,
+      });
 
-marker.addTo(searchResultMarkers);
+      marker.addTo(searchResultMarkers);
 
       // Create safe popup content
       const popupContent = document.createElement("div");
@@ -346,7 +356,6 @@ marker.addTo(searchResultMarkers);
 
 
 
-
 // ==========================================
 // 9. SELECT LOCATION
 // ==========================================
@@ -375,13 +384,13 @@ async function selectLocation(place) {
     // Update the map to the selected location
     map.setView([latitude, longitude], 13);
 
-  // Add a custom blue marker to the selected location
-locationMarker = L.marker([latitude, longitude], {
-  icon: selectedLocationIcon,
-}).addTo(map);
+    // Add a custom blue marker to the selected location
+    locationMarker = L.marker([latitude, longitude], {
+      icon: selectedLocationIcon,
+    }).addTo(map);
 
-// Display the selected location name
-locationMarker.bindPopup(locationName).openPopup();
+    // Display the selected location name
+    locationMarker.bindPopup(locationName).openPopup();
 
     // Load current weather
     await showCurrentWeather(place.name, latitude, longitude);
@@ -399,7 +408,7 @@ locationMarker.bindPopup(locationName).openPopup();
       // Store the retrieved nearby places
       currentNearbyPlaces = Array.isArray(localPlaces) ? localPlaces : [];
 
-       // Display markers for retrieved nearby places
+      // Display markers for retrieved nearby places
       displayNearbyPlaceMarkers(currentNearbyPlaces);
 
       // Get nearby places with valid names
@@ -450,7 +459,6 @@ locationMarker.bindPopup(locationName).openPopup();
 
 
 
-
 // ==========================================
 // SELECT A LOCAL PLACE
 // ==========================================
@@ -464,20 +472,15 @@ async function selectLocalPlace(place) {
   const longitude = place.lon;
 
   // Check whether coordinates are valid
-  if (
-    !Number.isFinite(latitude) ||
-    !Number.isFinite(longitude)
-  ) {
-    locationMessage.textContent =
-      "This place does not have valid coordinates.";
+  if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) {
+    locationMessage.textContent = "This place does not have valid coordinates.";
     return;
   }
 
   // Get the place name and address
   const placeName = place.name || "Selected local place";
 
-  const address =
-    place.address_line2 || place.address_line1 || "";
+  const address = place.address_line2 || place.address_line1 || "";
 
   try {
     locationMessage.textContent = `Loading ${placeName}...`;
@@ -493,9 +496,7 @@ async function selectLocalPlace(place) {
     // Create safe popup content
     const popupContent = document.createElement("div");
 
-    popupContent.textContent = address
-      ? `${placeName}, ${address}`
-      : placeName;
+    popupContent.textContent = address ? `${placeName}, ${address}` : placeName;
 
     locationMarker.bindPopup(popupContent).openPopup();
 
@@ -513,17 +514,12 @@ async function selectLocalPlace(place) {
       const localPlaces = await getLocalPlaces(latitude, longitude);
 
       // Store the retrieved nearby places
-      currentNearbyPlaces = Array.isArray(localPlaces)
-        ? localPlaces
-        : [];
+      currentNearbyPlaces = Array.isArray(localPlaces) ? localPlaces : [];
 
       // Display markers for nearby places
       displayNearbyPlaceMarkers(currentNearbyPlaces);
 
-      console.log(
-        "Nearby places retrieved:",
-        currentNearbyPlaces.length
-      );
+      console.log("Nearby places retrieved:", currentNearbyPlaces.length);
     } catch (error) {
       // Handle nearby places errors
       placesLoaded = false;
@@ -532,18 +528,17 @@ async function selectLocalPlace(place) {
       console.error("Geoapify Error:", error.message);
     }
 
+
+
     // Display activity recommendations
     showActivityRecommendations();
 
     // Update the location message
     if (placesLoaded) {
-      locationMessage.textContent =
-        `Local place found: ${placeName}`;
+      locationMessage.textContent = `Local place found: ${placeName}`;
     } else {
-      locationMessage.textContent =
-        `Local place found: ${placeName}, but nearby places could not be loaded. Check your Geoapify API key.`;
+      locationMessage.textContent = `Local place found: ${placeName}, but nearby places could not be loaded. Check your Geoapify API key.`;
     }
-
   } catch (error) {
     // Handle selection errors
     locationMessage.textContent = error.message;
@@ -583,6 +578,9 @@ async function searchLocation() {
   try {
     locationMessage.textContent = "Searching locations and local places...";
 
+
+
+
     // ==========================================
     // SEARCH GEOGRAPHIC LOCATIONS
     // ==========================================
@@ -597,9 +595,10 @@ async function searchLocation() {
 
     const data = await response.json();
 
-    const locationMatches = Array.isArray(data.results)
-      ? data.results
-      : [];
+    const locationMatches = Array.isArray(data.results) ? data.results : [];
+
+
+
 
     // ==========================================
     // SEARCH SPECIFIC LOCAL PLACES
@@ -612,21 +611,16 @@ async function searchLocation() {
     console.log("Local place matches:", localPlaceMatches);
 
     // Check whether any results were found
-    if (
-      locationMatches.length === 0 &&
-      localPlaceMatches.length === 0
-    ) {
+    if (locationMatches.length === 0 && localPlaceMatches.length === 0) {
       locationMessage.textContent =
         "No matching locations or local places found.";
       return;
     }
 
     // Display geographic location results for now
-      displayLocationResults(locationMatches, localPlaceMatches);
+    displayLocationResults(locationMatches, localPlaceMatches);
 
-    locationMessage.textContent =
-      "Search completed. Select a result.";
-
+    locationMessage.textContent = "Search completed. Select a result.";
   } catch (error) {
     locationMessage.textContent = error.message;
 
@@ -844,6 +838,7 @@ async function getLocalPlaces(latitude, longitude) {
 
 
 
+
 // ==========================================
 // SEARCH FOR SPECIFIC LOCAL PLACES
 // ==========================================
@@ -856,15 +851,13 @@ async function searchLocalPlace(query) {
   }
 
   // Create the Geoapify text search URL
-  let url =
-    `https://api.geoapify.com/v1/geocode/search?text=${encodeURIComponent(query)}&format=json&limit=10&filter=countrycode:ph&apiKey=${apiKey}`;
+  let url = `https://api.geoapify.com/v1/geocode/search?text=${encodeURIComponent(query)}&format=json&limit=10&filter=countrycode:ph&apiKey=${apiKey}`;
 
   // If a location is already selected, prioritize places near it
   if (locationMarker !== null) {
     const coordinates = locationMarker.getLatLng();
 
-    url =
-      `https://api.geoapify.com/v1/geocode/search?text=${encodeURIComponent(query)}&format=json&limit=10&filter=circle:${coordinates.lng},${coordinates.lat},10000&apiKey=${apiKey}`;
+    url = `https://api.geoapify.com/v1/geocode/search?text=${encodeURIComponent(query)}&format=json&limit=10&filter=circle:${coordinates.lng},${coordinates.lat},10000&apiKey=${apiKey}`;
   }
 
   // Send the search request
@@ -872,7 +865,7 @@ async function searchLocalPlace(query) {
 
   if (!response.ok) {
     throw new Error(
-      `Unable to search local places. Geoapify returned status ${response.status}.`
+      `Unable to search local places. Geoapify returned status ${response.status}.`,
     );
   }
 
@@ -882,6 +875,7 @@ async function searchLocalPlace(query) {
   // Return the matching local places
   return Array.isArray(data.results) ? data.results : [];
 }
+
 
 
 
@@ -909,7 +903,6 @@ function filterNamedPlaces(places) {
 
 
 
-
 // ==========================================
 // DISPLAY NEARBY PLACE MARKERS
 // ==========================================
@@ -931,18 +924,13 @@ function displayNearbyPlaceMarkers(places) {
     const longitude = properties.lon;
 
     // Skip places without valid coordinates
-    if (
-      !Number.isFinite(latitude) ||
-      !Number.isFinite(longitude)
-    ) {
+    if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) {
       return;
     }
 
     // Get the place name
     const placeName =
-      properties.name ||
-      properties.categories?.[0] ||
-      "Nearby place";
+      properties.name || properties.categories?.[0] || "Nearby place";
 
     // Get the place address
     const placeAddress =
@@ -977,10 +965,9 @@ function displayNearbyPlaceMarkers(places) {
   // Display the total number of nearby markers
   console.log(
     "Nearby place markers displayed:",
-    nearbyPlaceMarkers.getLayers().length
+    nearbyPlaceMarkers.getLayers().length,
   );
 }
-
 
 
 
@@ -1628,6 +1615,7 @@ function displayCurrentActivity() {
       ? "Start Again ↻"
       : "Next Activity →";
 }
+
 
 
 

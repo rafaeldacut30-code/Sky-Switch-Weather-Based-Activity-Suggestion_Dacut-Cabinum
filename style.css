@@ -1,9 +1,23 @@
+
 /* 1. GENERAL SETTINGS */
 
 :root {
     font-family: Arial, sans-serif;
     color: #19334a;
-    background: #ffffff;
+
+    --primary-blue: #2583e8;
+    --deep-blue: #185abd;
+    --teal: #13a89e;
+    --green: #20ae59;
+    --purple: #8064d8;
+
+    --soft-blue: #edf6ff;
+    --soft-green: #edfaf2;
+    --soft-purple: #f4f0ff;
+
+    --text-dark: #19334a;
+    --text-muted: #587487;
+    --border-color: #c9e2f0;
 }
 
 * {
@@ -11,9 +25,20 @@
     scroll-behavior: smooth;
 }
 
+html {
+    background: #e6f3ff;
+}
+
 body {
     margin: 0;
+    background:
+        radial-gradient(ellipse at 10% 10%, #cceeff 0%, transparent 35%),
+        radial-gradient(ellipse at 90% 30%, #d5f9e7 0%, transparent 35%),
+        radial-gradient(ellipse at 50% 100%, #e8ddff 0%, transparent 40%),
+        #eaf4ff;
 }
+
+
 
 
 /* 2. NAVIGATION BAR */
@@ -24,43 +49,63 @@ body {
     align-items: center;
     justify-content: space-between;
     padding: 18px 4%;
-    background: #ffffff;
-    border-bottom: 1px solid #e5edf1;
-    box-shadow: 0 4px 14px rgba(25, 51, 74, 0.06);
+
+    background: linear-gradient(
+        110deg,
+        #b9e4ff,
+        #baf3e4,
+        #e0d5ff
+    );
+
+    border-bottom: 2px solid #a5d8ed;
+    box-shadow: 0 5px 20px rgba(38, 105, 160, 0.15);
+
     position: relative;
     z-index: 10;
 }
 
 
-/* SKY SWITCH LOGO */
+
+/* LOGO */
 
 .logo {
     display: inline-flex;
     align-items: center;
     gap: 12px;
+
     padding: 9px 15px;
-    color: #159447;
+
+    color: #12834f;
     font-size: 1.9rem;
     font-weight: 800;
     letter-spacing: -1px;
     text-decoration: none;
-    border: 2px solid #20ae59;
+
+    border: 2px solid #19a76b;
     border-radius: 12px;
-    background: #f1fbf4;
+
+    background: linear-gradient(135deg, #ffffff, #c9f7df);
+    box-shadow: 0 4px 12px rgba(32, 174, 89, 0.12);
 }
 
 .logo::before {
     content: "☀";
+
     width: 42px;
     height: 42px;
+
     display: flex;
     align-items: center;
     justify-content: center;
+
     background: #dff8e8;
     color: #159447;
+
     border-radius: 10px;
     font-size: 1.7rem;
 }
+
+
 
 
 /* NAVIGATION CONTAINER */
@@ -70,29 +115,34 @@ body {
     align-items: center;
     gap: 8px;
     padding: 6px;
-    background: #f4f8fa;
-    border: 1px solid #e7eef2;
+
+    background: linear-gradient(135deg, #d9f1ff, #d9f9ed);
+    border: 1px solid #a9d9e8;
     border-radius: 13px;
 }
+
 
 
 /* NAVIGATION LINKS */
 
 .navbar nav a {
-    color: #526a7d;
+    color: #315b7b;
     font-size: 0.9rem;
     font-weight: 700;
     letter-spacing: 0.5px;
     text-decoration: none;
+
     padding: 12px 19px;
     border-radius: 9px;
+
     transition: all 0.2s ease;
 }
 
 .navbar nav a:first-child {
-    color: #ffffff;
-    background: #168f95;
-    box-shadow: 0 3px 8px rgba(22, 143, 149, 0.20);
+    color: white;
+
+    background: linear-gradient(135deg, #167bd3, #0ba99c);
+    box-shadow: 0 4px 10px rgba(37, 131, 232, 0.22);
 }
 
 .navbar nav a:hover {
@@ -101,8 +151,8 @@ body {
 }
 
 .navbar nav a:first-child:hover {
-    color: #ffffff;
-    background: #106f76;
+    color: white;
+    background: linear-gradient(135deg, #185abd, #087f78);
 }
 
 .navbar nav a:focus-visible {
@@ -111,73 +161,133 @@ body {
 }
 
 
+
+
 /* 3. MAIN TWO-COLUMN LAYOUT */
 
 .main-layout {
     display: grid;
     grid-template-columns: 58% 42%;
     min-height: 650px;
+
+    background: linear-gradient(
+        120deg,
+        #e8f5ff,
+        #e6fff2,
+        #f0eaff
+    );
 }
 
 .left-column {
     position: relative;
     padding: 25px 35px 35px 3%;
+
+    background: linear-gradient(
+        155deg,
+        #e0f1ff,
+        #e8f9ff,
+        #e5fff2
+    );
 }
+
 
 /* VERTICAL SEPARATOR */
 
 .left-column::after {
     content: "";
+
     position: absolute;
     top: 25px;
     right: 0;
     bottom: 25px;
+
     width: 2px;
+
     background: linear-gradient(
         to bottom,
-        #dce9ed,
-        #b9ddd7,
-        #dce9ed
+        #8bc8ff,
+        #79dfc0,
+        #c4b5fd
     );
 }
 
 .right-column {
     padding: 25px 3% 35px 35px;
-    background: #fcfefe;
+
+    background: linear-gradient(
+        155deg,
+        #dff4ff,
+        #dff8ed,
+        #eee8ff
+    );
 }
+
+
 
 
 /* 4. API KEY SECTION */
 
 .api-section {
     margin-bottom: 20px;
+    padding: 17px;
+
+    background: linear-gradient(135deg, #d4ecff, #dcf8f0);
+
+    border: 1px solid #b7dfee;
+    border-radius: 14px;
+
+    box-shadow: 0 4px 12px rgba(54, 130, 170, 0.08);
 }
 
 .api-section label {
     display: block;
     margin-bottom: 8px;
+
+    color: #245a7e;
     font-weight: bold;
 }
 
 .api-section input {
     width: 100%;
     max-width: 450px;
+
     padding: 12px;
-    border: 2px solid #159fe0;
-    border-radius: 7px;
+
+    background: #f4fbff;
+    border: 2px solid #8dc9e9;
+    border-radius: 10px;
+
     font-size: 1rem;
+    transition: all 0.2s ease;
 }
+
+.api-section input:focus {
+    outline: none;
+    background: white;
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 4px rgba(37, 131, 232, 0.13);
+}
+
+
 
 
 /* 5. LOCATION SEARCH */
 
 .location-section {
     margin-bottom: 25px;
+    padding: 17px;
+
+    background: linear-gradient(135deg, #dff8ef, #dceeff);
+
+    border: 1px solid #b5e5d4;
+    border-radius: 14px;
 }
 
 .location-section label {
     display: block;
     margin-bottom: 8px;
+
+    color: #176a65;
     font-weight: bold;
 }
 
@@ -189,69 +299,216 @@ body {
 .search-controls input {
     flex: 1;
     min-width: 0;
+
     padding: 12px;
-    border: 2px solid #159fe0;
-    border-radius: 7px;
+
+    background: #f4fbff;
+    border: 2px solid #8dc9e9;
+    border-radius: 10px;
+
     font-size: 1rem;
+    transition: all 0.2s ease;
+}
+
+.search-controls input:focus {
+    outline: none;
+    background: white;
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 4px rgba(37, 131, 232, 0.13);
 }
 
 .search-controls button {
     padding: 12px 18px;
+
     border: none;
-    border-radius: 7px;
-    background: #159fe0;
+    border-radius: 9px;
+
+    background: linear-gradient(135deg, #1685df, #08a99c);
     color: white;
+
     font-weight: bold;
     cursor: pointer;
-    transition: background 0.2s ease;
+
+    box-shadow: 0 4px 10px rgba(37, 131, 232, 0.18);
+    transition: all 0.2s ease;
 }
 
 .search-controls button:hover {
-    background: #087bb5;
+    background: linear-gradient(135deg, #185abd, #087f78);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(37, 131, 232, 0.23);
 }
 
 #locationMessage {
-    color: #718096;
+    color: #52718f;
     font-size: 0.85rem;
+    font-weight: 500;
 }
 
 
-/* 12. MAP SECTION */
+
+
+/* 6. LOCATION SEARCH RESULTS */
+
+.location-results {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    width: 100%;
+    margin-top: 15px;
+}
+
+.location-results h4 {
+    margin: 0 0 4px;
+
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.location-results button {
+    width: 100%;
+    padding: 12px 15px;
+
+    text-align: left;
+    font-size: 14px;
+    line-height: 1.5;
+
+    background: linear-gradient(120deg, #e2f2ff, #ddf9ed);
+    color: #244b6b;
+
+    border: 1px solid #b4dce9;
+    border-radius: 11px;
+
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.location-results button:hover {
+    background: linear-gradient(110deg, #dceeff, #dcf8eb);
+    border-color: var(--primary-blue);
+    transform: translateX(3px);
+}
+
+.location-results button:focus-visible {
+    outline: 2px solid var(--primary-blue);
+    outline-offset: 2px;
+}
+
+
+
+
+/* 7. MAP SECTION */
 
 .map-section {
     margin-top: 25px;
+    padding: 17px;
+
+    background: linear-gradient(135deg, #d8efff, #e2fff1);
+
+    border: 1px solid #b8dfee;
+    border-radius: 15px;
 }
 
 .map-section h2 {
-    font-size: 1.2rem;
     margin-bottom: 12px;
+    font-size: 1.2rem;
+    color: #17618d;
 }
 
 #map {
     width: 100%;
     height: 490px;
-    border: 2px solid #e6e6e6;
-    border-radius: 8px;
+
+    border: 4px solid white;
+    border-radius: 13px;
+
     z-index: 0;
+
+    box-shadow: 0 7px 20px rgba(35, 102, 145, 0.18);
 }
 
 
-/* 12. CURRENT WEATHER */
+
+/* MAP MARKER LEGEND */
+
+.map-legend {
+    padding: 12px 15px;
+
+    background: linear-gradient(135deg, #ffffff, #f0f8ff);
+    color: #1e293b;
+
+    border: 1px solid #d7e9f5;
+    border-radius: 10px;
+
+    box-shadow: 0 4px 14px rgba(30, 70, 110, 0.18);
+
+    font-size: 13px;
+    line-height: 1.8;
+}
+
+.map-legend strong {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.legend-dot {
+    display: inline-block;
+
+    width: 11px;
+    height: 11px;
+
+    margin-right: 7px;
+    border-radius: 50%;
+}
+
+.selected-dot {
+    background-color: #2563eb;
+}
+
+.nearby-dot {
+    background-color: #16a34a;
+}
+
+.search-dot {
+    background-color: #f59e0b;
+}
+
+
+
+
+/* 8. CURRENT WEATHER */
 
 .weather-section {
     margin-bottom: 35px;
-}
+    padding: 18px;
 
-/* BLUE BOX AROUND CURRENT WEATHER */
+    background: linear-gradient(
+        135deg,
+        #cceaff,
+        #d8f5ff,
+        #d9f9ed
+    );
+
+    border: 1px solid #a9d9ef;
+    border-radius: 16px;
+
+    box-shadow: 0 5px 16px rgba(39, 130, 170, 0.10);
+}
 
 .weather-section > h2 {
     display: inline-block;
+
     padding: 9px 15px;
     margin: 0 0 15px;
-    color: #087bb5;
-    background: #eef8ff;
-    border: 2px solid #159fe0;
+
+    color: #075b99;
+    background: linear-gradient(135deg, #a9dcff, #b9f3f0);
+
+    border: 2px solid #65bde8;
     border-radius: 8px;
+
     font-size: 1.3rem;
 }
 
@@ -259,11 +516,19 @@ body {
     display: flex;
     align-items: center;
     gap: 20px;
+
     min-height: 180px;
     padding: 20px;
-    border: 1px solid #a0a0a0;
-    border-radius: 8px;
-    background: #ffffff;
+
+    background: linear-gradient(
+        120deg,
+        #f0f9ff,
+        #dff4ff,
+        #e2fff0
+    );
+
+    border: 1px solid #a9d9e8;
+    border-radius: 14px;
 }
 
 .weather-icon {
@@ -277,61 +542,85 @@ body {
 
 .temperature {
     margin: 0;
+
+    color: #12a866;
     font-size: 2rem;
     font-weight: bold;
-    color: #20ae59;
 }
 
 .weather-description {
-    color: #718096;
     margin-bottom: 0;
+    color: #718096;
 }
 
 
-/* 13. WEATHER DETAILS */
+
+
+/* 9. WEATHER DETAILS */
 
 .weather-details {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 10px;
+
     margin-top: 12px;
 }
 
 .weather-detail {
     padding: 12px 8px;
-    background: #f1f8f4;
-    border-radius: 7px;
+
+    background: linear-gradient(145deg, #bcebdc, #d7f5ff);
+
+    border: 1px solid #a8dfd7;
+    border-radius: 11px;
+
     text-align: center;
+    transition: transform 0.2s ease;
+}
+
+.weather-detail:hover {
+    transform: translateY(-3px);
 }
 
 .weather-detail span {
     display: block;
+    margin-bottom: 7px;
+
     color: #718096;
     font-size: 0.8rem;
-    margin-bottom: 7px;
 }
 
 .weather-detail strong {
-    color: #20ae59;
+    color: #119b68;
 }
 
 
-/* 9. WEATHER FORECAST */
+
+
+/* 10. WEATHER FORECAST */
 
 .forecast-section {
     margin-top: 22px;
-}
+    padding: 15px;
 
-/* BLUE BOX AROUND FORECAST HEADING */
+    background: linear-gradient(135deg, #e0edff, #e9e2ff);
+
+    border: 1px solid #c8d1f0;
+    border-radius: 14px;
+}
 
 .forecast-section h3 {
     display: inline-block;
+
     padding: 8px 13px;
     margin: 0 0 12px;
-    color: #087bb5;
-    background: #eef8ff;
-    border: 2px solid #159fe0;
+
+    color: #4659a8;
+    background: linear-gradient(135deg, #c9e6ff, #dcd5ff);
+
+    border: 2px solid #a6baf0;
     border-radius: 8px;
+
     font-size: 1.05rem;
 }
 
@@ -339,17 +628,38 @@ body {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    
-    /* FORECAST CARDS */
+}
 
 .forecast-card {
     flex: 1 1 100px;
     min-width: 100px;
+
     padding: 12px 8px;
+
+    background: linear-gradient(160deg, #f0f8ff, #d9edff);
+
+    border: 1px solid #b5d7ef;
+    border-radius: 12px;
+
     text-align: center;
-    background: #f1f8f4;
-    border: 1px solid #dce9ed;
-    border-radius: 8px;
+
+    box-shadow: 0 3px 10px rgba(37, 131, 232, 0.07);
+    transition: all 0.2s ease;
+}
+
+.forecast-card:nth-child(even) {
+    background: linear-gradient(160deg, #effff7, #d6f6e8);
+    border-color: #b5e5cf;
+}
+
+.forecast-card:nth-child(3n) {
+    background: linear-gradient(160deg, #f6f1ff, #e6ddff);
+    border-color: #d1c4f2;
+}
+
+.forecast-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 7px 15px rgba(37, 131, 232, 0.13);
 }
 
 .forecast-card h4 {
@@ -368,11 +678,9 @@ body {
 }
 
 .forecast-card p:nth-of-type(1) {
-    color: #20ae59;
-    font-weight: bold;
+    color: #129c70;
     font-size: 1.1rem;
-}
-
+    font-weight: bold;
 }
 
 .empty-message {
@@ -381,47 +689,96 @@ body {
 }
 
 
-/* 10. SUGGESTED ACTIVITIES */
+
+
+/* 11. SUGGESTED ACTIVITIES */
 
 .activities-section {
     margin-top: 30px;
-}
+    padding: 18px;
 
-/* GREEN BOX AROUND ACTIVITIES HEADING */
+    background: linear-gradient(
+        145deg,
+        #d8f8e8,
+        #d8f4ff,
+        #e9e0ff
+    );
+
+    border: 1px solid #b5e6d2;
+    border-radius: 16px;
+
+    box-shadow: 0 5px 16px rgba(40, 130, 100, 0.09);
+}
 
 .activity-heading h2 {
     display: inline-block;
+
     padding: 9px 15px;
     margin: 0 0 8px;
-    color: #159447;
-    background: #f0faf3;
-    border: 2px solid #20ae59;
+
+    color: #117c49;
+    background: linear-gradient(135deg, #b9f2d0, #c9fff0);
+
+    border: 2px solid #65cc91;
     border-radius: 8px;
+
     font-size: 1.3rem;
 }
 
 .activity-heading p {
-    color: #718096;
-    line-height: 1.5;
     margin-top: 0;
+
+    color: #426c7d;
+    line-height: 1.5;
 }
 
 .activity-card {
     margin-top: 18px;
-    border: 1px solid #e0e7eb;
-    border-radius: 10px;
+
+    background: linear-gradient(145deg, #ffffff, #e7fff2);
+
+    border: 1px solid #a9dfc1;
+    border-radius: 15px;
     overflow: hidden;
-    background: #ffffff;
+
+    box-shadow: 0 7px 18px rgba(30, 125, 85, 0.12);
+    transition: all 0.25s ease;
+}
+
+.activity-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 22px rgba(30, 125, 85, 0.14);
+}
+
+
+
+/* ACTIVITY IMAGE */
+
+#activityImageContainer {
+    width: 100%;
+    height: 220px;
+    overflow: hidden;
+}
+
+#activityImageContainer img {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
 }
 
 .activity-image-placeholder {
     width: 100%;
     min-height: 190px;
-    background: #edf7f2;
+
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+
+    background: #edf7f2;
     color: #20ae59;
 }
 
@@ -430,54 +787,78 @@ body {
 }
 
 .activity-image-placeholder p {
-    font-size: 0.9rem;
     color: #718096;
+    font-size: 0.9rem;
 }
+
+
+
+/* ACTIVITY INFORMATION */
 
 .activity-information {
     padding: 15px;
+
+    background: linear-gradient(
+        135deg,
+        #f1fff6,
+        #e1f5ff,
+        #f0eaff
+    );
 }
 
 .activity-information h3 {
     margin: 0 0 8px;
+    color: #176b48;
 }
 
 .activity-information p {
-    color: #718096;
+    margin-bottom: 0;
+
+    color: #587487;
     font-size: 0.9rem;
     line-height: 1.5;
-    margin-bottom: 0;
 }
 
 
-/* 11. ACTIVITY CONTROLS */
+
+
+/* 12. ACTIVITY CONTROLS */
 
 .activity-controls {
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 10px;
+
     margin-top: 15px;
 }
 
 #activityCounter {
-    color: #718096;
+    color: #426b83;
     font-size: 0.85rem;
+    font-weight: 600;
 }
 
 #nextActivityBtn {
     padding: 11px 18px;
+
     border: none;
-    border-radius: 7px;
-    background: #20ae59;
+    border-radius: 10px;
+
+    background: linear-gradient(135deg, #13a85d, #08a89b);
     color: white;
+
     font-weight: bold;
     cursor: pointer;
-    transition: background 0.2s ease;
+
+    box-shadow: 0 4px 10px rgba(32, 174, 89, 0.18);
+    transition: all 0.2s ease;
 }
 
 #nextActivityBtn:hover:not(:disabled) {
-    background: #137c40;
+    background: linear-gradient(135deg, #138442, #087f78);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(32, 174, 89, 0.24);
 }
 
 #nextActivityBtn:disabled {
@@ -486,38 +867,62 @@ body {
 }
 
 
-/* 12. FOOTER */
+
+
+/* 13. FOOTER */
 
 footer {
-    background: #f1f8f4;
-    border-top: 2px solid #e3eee6;
-    text-align: center;
     padding: 22px;
-}
+    text-align: center;
 
-/* GREEN FOOTER BRANDING */
+    background: linear-gradient(
+        110deg,
+        #bce5ff,
+        #bff3dc,
+        #d9ccff
+    );
+
+    border-top: 2px solid #a9d9e5;
+}
 
 footer p {
     display: inline-block;
-    color: #159447;
-    font-weight: 800;
-    font-size: 1.1rem;
-    letter-spacing: 1px;
+
     padding: 7px 15px;
     margin: 0 0 8px;
-    border: 2px solid #20ae59;
+
+    color: #159447;
+    background: linear-gradient(135deg, #ffffff, #d9fbe9);
+
+    border: 2px solid #55c88b;
     border-radius: 8px;
-    background: #ffffff;
+
+    font-size: 1.1rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+
+    box-shadow: 0 3px 10px rgba(32, 174, 89, 0.10);
 }
 
 footer span {
     display: block;
-    color: #718096;
+    color: #52718f;
     font-size: 0.85rem;
 }
 
 
-/* 13. RESPONSIVE DESIGN */
+
+
+/* 14. GENERAL BUTTON INTERACTIONS */
+
+button {
+    transition: all 0.2s ease;
+}
+
+
+
+
+/* 15. RESPONSIVE DESIGN */
 
 @media (max-width: 850px) {
 
@@ -538,6 +943,7 @@ footer span {
 
     .left-column {
         padding: 25px;
+        border-bottom: 1px solid #dce7ed;
     }
 
     .left-column::after {
@@ -546,21 +952,25 @@ footer span {
 
     .right-column {
         padding: 25px;
-    }
-
-    .left-column {
-        border-bottom: 1px solid #dce7ed;
+        background: linear-gradient(
+            145deg,
+            #e0f2ff,
+            #e4fff1,
+            #eee8ff
+        );
     }
 }
 
 
-/* 14. SMALL SCREEN DESIGN */
+
+
+/* 16. SMALL SCREEN DESIGN */
 
 @media (max-width: 500px) {
 
     .logo {
-        font-size: 1.5rem;
         gap: 8px;
+        font-size: 1.5rem;
     }
 
     .logo::before {
@@ -591,6 +1001,11 @@ footer span {
         grid-template-columns: 1fr;
     }
 
+    .weather-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
     #map {
         height: 350px;
     }
@@ -598,115 +1013,4 @@ footer span {
     .activity-controls {
         flex-wrap: wrap;
     }
-
-}
-
-
-
-/* ==========================================
-   LOCATION SEARCH RESULTS
-========================================== */
-
-.location-results {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-top: 15px;
-  width: 100%;
-}
-
-/* Results heading */
-.location-results h4 {
-  margin: 0 0 4px;
-  font-size: 15px;
-  font-weight: 600;
-}
-
-/* Individual location buttons */
-.location-results button {
-  width: 100%;
-  padding: 12px 15px;
-
-  text-align: left;
-  font-size: 14px;
-  line-height: 1.5;
-
-  background-color: #f5f7fa;
-  color: #222;
-
-  border: 1px solid #dce1e8;
-  border-radius: 8px;
-
-  cursor: pointer;
-  transition: background-color 0.2s ease,
-              border-color 0.2s ease;
-}
-
-/* Hover effect */
-.location-results button:hover {
-  background-color: #e8f1ff;
-  border-color: #3985d6;
-}
-
-/* Keyboard focus */
-.location-results button:focus-visible {
-  outline: 2px solid #3985d6;
-  outline-offset: 2px;
-}
-
-
-/* Activity Image Container */
-#activityImageContainer {
-  width: 100%;
-  height: 220px;
-  overflow: hidden;
-}
-
-/* Activity Image */
-#activityImageContainer img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-
-/* ==========================================
-   MAP MARKER LEGEND
-========================================== */
-
-.map-legend {
-  background: white;
-  padding: 12px 15px;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  font-size: 13px;
-  line-height: 1.8;
-  color: #1e293b;
-}
-
-.map-legend strong {
-  display: block;
-  margin-bottom: 5px;
-  font-size: 14px;
-}
-
-.legend-dot {
-  display: inline-block;
-  width: 11px;
-  height: 11px;
-  border-radius: 50%;
-  margin-right: 7px;
-}
-
-.selected-dot {
-  background-color: #2563eb;
-}
-
-.nearby-dot {
-  background-color: #16a34a;
-}
-
-.search-dot {
-  background-color: #f59e0b;
 }
