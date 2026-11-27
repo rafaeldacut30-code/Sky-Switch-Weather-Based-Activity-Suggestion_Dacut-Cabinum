@@ -212,3 +212,99 @@ function displayLocationResults(results) {
 
 
 
+// ==========================================
+// 9. SELECT LOCATION
+// ==========================================
+
+async function selectLocation(place) {
+  // Clear previous weather, map, and activity results
+  clearPreviousResults();
+
+  // Get the selected location's coordinates
+  const latitude = place.latitude;
+  const longitude = place.longitude;
+
+  // Build the selected location's display name
+  const details = [
+    place.name,
+    place.admin2,
+    place.admin1,
+    place.country,
+  ].filter(Boolean);
+
+  const locationName = [...new Set(details)].join(", ");
+
+  try {
+    locationMessage.textContent = `Loading ${locationName}...`;
+
+    // Update the map to the selected location
+    map.setView([latitude, longitude], 13);
+
+    // Add a marker to the selected location
+    locationMarker = L.marker([latitude, longitude]).addTo(map);
+    locationMarker.bindPopup(locationName).openPopup();
+
+    // Load current weather
+    await showCurrentWeather(place.name, latitude, longitude);
+
+    // Load weather forecast
+    await showWeatherForecast(latitude, longitude);
+
+    // Track whether nearby places loaded successfully
+    let placesLoaded = true;
+
+    try {
+      // Retrieve nearby places from Geoapify
+      const localPlaces = await getLocalPlaces(latitude, longitude);
+
+      // Store the retrieved nearby places
+      currentNearbyPlaces = Array.isArray(localPlaces) ? localPlaces : [];
+
+      // Get nearby places with valid names
+      const namedPlaces = filterNamedPlaces(currentNearbyPlaces);
+
+      // Display retrieved places in the console
+      console.table(
+        namedPlaces.map(function (place) {
+          const properties = place.properties;
+
+          return {
+            name: properties.name,
+            category: properties.categories.join(", "),
+            address: properties.address_line1 || "",
+            city: properties.city || "",
+            latitude: properties.lat,
+            longitude: properties.lon,
+          };
+        }),
+      );
+
+      console.log("Geoapify places retrieved:", currentNearbyPlaces.length);
+    } catch (error) {
+      // Handle errors when retrieving nearby places
+      placesLoaded = false;
+      currentNearbyPlaces = [];
+
+      console.error("Geoapify Error:", error.message);
+    }
+
+    // Display activity recommendations
+    showActivityRecommendations();
+
+    // Update the location message
+    if (placesLoaded) {
+      locationMessage.textContent = `Location found: ${locationName}`;
+    } else {
+      locationMessage.textContent = `Location found: ${locationName}, but nearby places could not be loaded. Check your Geoapify API key.`;
+    }
+  } catch (error) {
+    // Handle location selection errors
+    locationMessage.textContent = error.message;
+
+    console.error("Location selection error:", error);
+  }
+}
+
+
+
+
