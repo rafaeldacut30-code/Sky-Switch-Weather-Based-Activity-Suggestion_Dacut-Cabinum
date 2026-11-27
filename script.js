@@ -309,6 +309,9 @@ async function selectLocation(place) {
       // Store the retrieved nearby places
       currentNearbyPlaces = Array.isArray(localPlaces) ? localPlaces : [];
 
+       // Display markers for retrieved nearby places
+      displayNearbyPlaceMarkers(currentNearbyPlaces);
+
       // Get nearby places with valid names
       const namedPlaces = filterNamedPlaces(currentNearbyPlaces);
 
@@ -647,6 +650,63 @@ function filterNamedPlaces(places) {
       Array.isArray(properties.categories)
     );
   });
+}
+
+
+
+// ==========================================
+// DISPLAY NEARBY PLACE MARKERS
+// ==========================================
+
+function displayNearbyPlaceMarkers(places) {
+  // Clear markers from the previous selected location
+  nearbyPlaceMarkers.clearLayers();
+
+  // Check whether the places data is valid
+  if (!Array.isArray(places)) {
+    return;
+  }
+
+  // Create a marker for every nearby place with valid coordinates
+  places.forEach(function (place) {
+    const properties = place.properties || {};
+
+    const latitude = properties.lat;
+    const longitude = properties.lon;
+
+    // Skip places without valid coordinates
+    if (
+      !Number.isFinite(latitude) ||
+      !Number.isFinite(longitude)
+    ) {
+      return;
+    }
+
+    // Get the place name
+    const placeName =
+      properties.name ||
+      properties.categories?.[0] ||
+      "Nearby place";
+
+    // Create the nearby place marker
+    const marker = L.marker([latitude, longitude]);
+
+    // Add the marker to the nearby places marker group
+    marker.addTo(nearbyPlaceMarkers);
+
+    // Create popup content
+    const popupContent = document.createElement("div");
+    popupContent.textContent = placeName;
+
+    // Display the place name when the marker is clicked
+    marker.bindPopup(popupContent);
+  });
+
+  // Display the total number of nearby markers
+  console.log(
+    "Nearby place markers displayed:",
+    nearbyPlaceMarkers.getLayers().length
+  );
 }
 
 
