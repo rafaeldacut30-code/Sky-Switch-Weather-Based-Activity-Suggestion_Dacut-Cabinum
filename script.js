@@ -308,3 +308,69 @@ async function selectLocation(place) {
 
 
 
+// ==========================================
+// 10. SEARCH LOCATION
+// ==========================================
+
+async function searchLocation() {
+  const location = locationInput.value.trim();
+
+  // Clear all previous results before validating the new search
+  clearPreviousResults();
+
+  // Check if location is empty
+  if (location === "") {
+    locationMessage.textContent = "Please enter a location.";
+
+    return;
+  }
+
+  // Check API key
+  const apiKey = apiKeyInput.value.trim();
+
+  if (apiKey === "") {
+    locationMessage.textContent =
+      "Please enter your OpenWeather API key first.";
+
+    return;
+  }
+
+  try {
+    locationMessage.textContent = "Searching location...";
+
+    // Create Geocoding API URL
+    const url = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(location)}&count=10&language=en&format=json&countryCode=PH`;
+
+    // Send request
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error("Unable to search for location.");
+    }
+
+    // Convert response to JSON
+    const data = await response.json();
+
+    // Check if location exists
+    if (!data.results || data.results.length === 0) {
+      locationMessage.textContent = "Location not found. Try another place.";
+
+      return;
+    }
+
+    // Display all matching Philippine locations
+    displayLocationResults(data.results);
+
+    // Ask the user to select a location
+    locationMessage.textContent =
+      "Please select the correct location from the results.";
+  } catch (error) {
+    locationMessage.textContent = error.message;
+
+    console.error("Search error:", error);
+  }
+}
+
+
+
+
