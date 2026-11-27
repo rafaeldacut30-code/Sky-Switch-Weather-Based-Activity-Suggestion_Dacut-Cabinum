@@ -603,3 +603,95 @@ function filterNamedPlaces(places) {
 
 
 
+// ==========================================
+// 15. DISPLAY WEATHER FORECAST
+// ==========================================
+
+async function showWeatherForecast(latitude, longitude) {
+  // Get forecast data
+  const data = await getWeatherForecast(latitude, longitude);
+
+  // Get forecast container
+  const forecastDetails = document.getElementById("forecastDetails");
+
+  // Clear previous forecast
+  forecastDetails.replaceChildren();
+
+  // Store best forecast for each day
+  const dailyForecasts = {};
+
+  // Check every forecast entry
+  data.list.forEach(function (item) {
+    // Adjust time using location timezone
+    const localDate = new Date((item.dt + data.city.timezone) * 1000);
+
+    // Get local date
+    const dateKey = localDate.toISOString().split("T")[0];
+
+    // Get local hour
+    const hour = localDate.getUTCHours();
+
+    // Choose forecast closest to 12 noon
+    const difference = Math.abs(hour - 12);
+
+    if (
+      !dailyForecasts[dateKey] ||
+      difference < dailyForecasts[dateKey].difference
+    ) {
+      dailyForecasts[dateKey] = {
+        item: item,
+        date: localDate,
+        difference: difference,
+      };
+    }
+  });
+
+  // Display up to five daily forecasts
+  const days = Object.values(dailyForecasts).slice(0, 5);
+
+  days.forEach(function (forecast) {
+    const item = forecast.item;
+
+    // Create forecast card
+    const card = document.createElement("div");
+    card.className = "forecast-card";
+
+    // Display date
+    const date = document.createElement("h4");
+
+    date.textContent = new Intl.DateTimeFormat("en-US", {
+      weekday: "short",
+      month: "short",
+      day: "numeric",
+      timeZone: "UTC",
+    }).format(forecast.date);
+
+    // Display weather icon
+    const icon = document.createElement("img");
+
+    icon.src = `https://openweathermap.org/img/wn/${item.weather[0].icon}.png`;
+
+    icon.alt = item.weather[0].description;
+    icon.width = 55;
+
+    // Display temperature
+    const temperature = document.createElement("p");
+
+    temperature.textContent = `${Math.round(item.main.temp)}°C`;
+
+    // Display weather description
+    const description = document.createElement("p");
+
+    description.textContent = item.weather[0].description;
+
+    // Add elements to forecast card
+    card.append(date, icon, temperature, description);
+
+    // Add card to webpage
+    forecastDetails.appendChild(card);
+  });
+}
+
+
+
+
