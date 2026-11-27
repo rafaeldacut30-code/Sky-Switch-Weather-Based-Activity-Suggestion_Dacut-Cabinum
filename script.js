@@ -16,3 +16,21 @@ L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
 
 
 
+// ==========================================
+// 2. GET HTML ELEMENTS
+// ==========================================
+
+const locationInput = document.getElementById("locationInput");
+const searchBtn = document.getElementById("searchBtn");
+const locationMessage = document.getElementById("locationMessage");
+const apiKeyInput = document.getElementById("apiKey");
+const geoapifyKeyInput = document.getElementById("geoapifyKey");
+const locationResults = document.getElementById("locationResults");
+
+// Get and clean the Geoapify API key entered by the user
+function getGeoapifyKey() {
+  return geoapifyKeyInput.value.trim();
+}
+
+
+
