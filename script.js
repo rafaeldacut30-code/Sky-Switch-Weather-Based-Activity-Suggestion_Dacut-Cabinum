@@ -1160,3 +1160,92 @@ function showActivityRecommendations() {
 
 
 
+//==========================================
+// 19. DISPLAY CURRENT ACTIVITY
+//==========================================
+// Display current activity
+function displayCurrentActivity() {
+  const activityImageContainer = document.getElementById(
+    "activityImageContainer",
+  );
+
+  const activityName = document.getElementById("activityName");
+
+  const activityPlace = document.getElementById("activityPlace");
+
+  const activityDescription = document.getElementById("activityDescription");
+
+  const activityCounter = document.getElementById("activityCounter");
+
+  const nextActivityBtn = document.getElementById("nextActivityBtn");
+
+  // Get selected activity
+  const activity = recommendedActivities[currentActivityIndex];
+
+  // Create image
+  const image = document.createElement("img");
+
+  image.src = activity.image;
+  image.alt = activity.name;
+
+  // Replace image placeholder
+  activityImageContainer.replaceChildren(image);
+
+  // Display activity information
+  activityName.textContent = activity.name;
+
+  // Get all matching nearby places
+  const matchedPlaces = activity.matchedPlaces || [];
+
+  // Clear previous nearby place information
+  activityPlace.replaceChildren();
+
+  // Display all matching nearby places
+  if (matchedPlaces.length > 0) {
+    const placeTitle = document.createElement("p");
+    placeTitle.textContent = "📍 Nearby places:";
+    activityPlace.appendChild(placeTitle);
+
+    const placeList = document.createElement("ul");
+
+    matchedPlaces.forEach(function (place) {
+      const listItem = document.createElement("li");
+
+      const placeName = place.properties.name;
+      const latitude = place.properties.lat;
+      const longitude = place.properties.lon;
+
+      // Create a link to the place on Google Maps//
+      const placeLink = document.createElement("a");
+
+      placeLink.textContent = placeName;
+      placeLink.href = `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
+      placeLink.target = "_blank";
+      placeLink.rel = "noopener noreferrer";
+
+      listItem.appendChild(placeLink);
+
+      placeList.appendChild(listItem);
+    });
+
+    activityPlace.appendChild(placeList);
+  } else {
+    activityPlace.textContent = "📍 No specific nearby place found.";
+  }
+
+  activityDescription.textContent = activity.description;
+
+  // Update activity counter
+  activityCounter.textContent = `${currentActivityIndex + 1} of ${recommendedActivities.length} activities`;
+
+  // Update button
+  nextActivityBtn.disabled = recommendedActivities.length <= 1;
+
+  nextActivityBtn.textContent =
+    currentActivityIndex === recommendedActivities.length - 1
+      ? "Start Again ↻"
+      : "Next Activity →";
+}
+
+
+
