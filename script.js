@@ -34,3 +34,53 @@ function getGeoapifyKey() {
 
 
 
+// ==========================================
+// 3. GLOBAL VARIABLES
+// ==========================================
+
+let locationMarker = null;
+let currentWeatherType = "";
+let currentNearbyPlaces = [];
+
+
+
+// ==========================================
+// 4. CLEAR MAP MARKER
+// ==========================================
+
+function clearLocationMarker() {
+  if (locationMarker !== null) {
+    map.removeLayer(locationMarker);
+    locationMarker = null;
+  }
+}
+
+
+
+// ==========================================
+// 5. DETECT WEATHER TYPE
+// ==========================================
+
+function detectWeatherType(weatherMain) {
+  if (weatherMain === "Clear") {
+    return "sunny";
+  }
+
+  if (weatherMain === "Clouds") {
+    return "cloudy";
+  }
+
+  if (
+    weatherMain === "Rain" ||
+    weatherMain === "Drizzle" ||
+    weatherMain === "Thunderstorm"
+  ) {
+    return "rainy";
+  }
+
+  return "cloudy";
+}
+
+
+
+
