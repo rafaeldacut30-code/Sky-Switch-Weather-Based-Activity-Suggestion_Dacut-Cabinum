@@ -695,3 +695,350 @@ async function showWeatherForecast(latitude, longitude) {
 
 
 
+// ==========================================
+// 16. ACTIVITY RECOMMENDATION DATABASE
+// ==========================================
+
+const activities = [
+  {
+    name: "Beach Picnic",
+    description:
+      "Enjoy a relaxing picnic near the coast while appreciating the sea view.",
+    image: "images/beach-picnic.jpg",
+    weather: ["sunny", "cloudy"],
+    placeCategories: ["beach"],
+  },
+  {
+    name: "Nature Hiking",
+    description: "Explore scenic trails and enjoy the natural surroundings.",
+    image: "images/nature-hiking.jpg",
+    weather: ["sunny", "cloudy"],
+    placeCategories: [
+      "natural.forest",
+      "natural.mountain",
+      "natural.protected_area",
+      "leisure.park",
+      "national_park",
+    ],
+  },
+  {
+    name: "Museum Visit",
+    description: "Discover local history, culture, and interesting exhibits.",
+    image: "images/museum.jpg",
+    weather: ["sunny", "cloudy", "rainy"],
+    placeCategories: ["entertainment.museum"],
+  },
+  {
+    name: "Indoor Café Visit",
+    description: "Relax at a local café and enjoy a warm drink or snack.",
+    image: "images/cafe.jpg",
+    weather: ["sunny", "cloudy", "rainy"],
+    placeCategories: ["catering.cafe"],
+  },
+  {
+    name: "Coastal Sightseeing",
+    description: "Explore the coastline and enjoy scenic ocean views.",
+    image: "images/coastal-sightseeing.jpg",
+    weather: ["sunny", "cloudy"],
+    placeCategories: [
+      "beach",
+      "natural.coastal",
+      "natural.water.sea",
+      "tourism.attraction.viewpoint",
+    ],
+  },
+  {
+    name: "Fishing Village Tour",
+    description:
+      "Discover the daily life and local culture of a fishing community.",
+    image: "images/fishing-village.jpg",
+    weather: ["sunny", "cloudy"],
+    placeCategories: [],
+  },
+  {
+    name: "Mountain Viewpoint Visit",
+    description:
+      "Visit a scenic viewpoint and appreciate the surrounding landscape.",
+    image: "images/mountain-viewpoint.jpg",
+    weather: ["sunny", "cloudy"],
+    placeCategories: ["tourism.attraction.viewpoint"],
+  },
+  {
+    name: "Park Exploration",
+    description: "Take a relaxing walk through a nearby public park.",
+    image: "images/park-exploration.jpg",
+    weather: ["sunny", "cloudy"],
+    placeCategories: ["leisure.park"],
+  },
+  {
+    name: "Local Food Trip",
+    description:
+      "Discover local dishes and enjoy the food culture of the area.",
+    image: "images/food-trip.jpg",
+    weather: ["sunny", "cloudy", "rainy"],
+    placeCategories: ["catering.restaurant", "catering.food_court"],
+  },
+  {
+    name: "Art Gallery Visit",
+    description: "Explore artworks and learn about local creativity.",
+    image: "images/art-gallery.jpg",
+    weather: ["sunny", "cloudy", "rainy"],
+    placeCategories: [
+      "entertainment.culture.gallery",
+      "entertainment.culture.arts_centre",
+    ],
+  },
+  {
+    name: "Library Visit",
+    description: "Spend some quiet time reading or discovering new books.",
+    image: "images/library.jpg",
+    weather: ["sunny", "cloudy", "rainy"],
+    placeCategories: ["education.library"],
+  },
+  {
+    name: "Covered Market Visit",
+    description:
+      "Explore a local market and discover fresh produce, goods, and local products.",
+    image: "images/covered-market.jpg",
+    weather: ["sunny", "cloudy", "rainy"],
+    placeCategories: ["commercial.marketplace"],
+  },
+  {
+    name: "Indoor Photography",
+    description: "Explore indoor spaces and practice creative photography.",
+    image: "images/indoor-photography.jpg",
+    weather: ["sunny", "cloudy", "rainy"],
+    placeCategories: ["entertainment.museum"],
+  },
+  {
+    name: "Local Cultural Center",
+    description:
+      "Learn about the traditions, heritage, and culture of the local community.",
+    image: "images/cultural-center.jpg",
+    weather: ["sunny", "cloudy", "rainy"],
+    placeCategories: ["activity.community_center"],
+  },
+  {
+    name: "Indoor Board Games",
+    description:
+      "Enjoy a relaxing indoor session with fun and challenging board games.",
+    image: "images/board-games.jpg",
+    weather: ["sunny", "cloudy", "rainy"],
+    placeCategories: ["commercial.hobby.games"],
+  },
+  {
+    name: "Cooking Workshop",
+    description:
+      "Learn simple cooking techniques and prepare delicious local dishes.",
+    image: "images/cooking-workshop.jpg",
+    weather: ["sunny", "cloudy", "rainy"],
+    placeCategories: [],
+  },
+  {
+    name: "Indoor Craft Workshop",
+    description:
+      "Explore your creativity through hands-on arts and crafts activities.",
+    image: "images/craft-workshop.jpg",
+    weather: ["sunny", "cloudy", "rainy"],
+    placeCategories: [
+      "entertainment.culture.arts_centre",
+      "commercial.hobby.art",
+    ],
+  },
+  {
+    name: "Movie Afternoon",
+    description:
+      "Enjoy a relaxing afternoon watching a movie in a nearby cinema.",
+    image: "images/movie-afternoon.jpg",
+    weather: ["sunny", "cloudy", "rainy"],
+    placeCategories: ["entertainment.cinema"],
+  },
+  {
+    name: "Local History Tour",
+    description:
+      "Discover important historical places and learn about the area's past.",
+    image: "images/history-tour.jpg",
+    weather: ["sunny", "cloudy"],
+    placeCategories: [
+      "tourism.sights.archaeological_site",
+      "tourism.sights.building",
+      "tourism.sights.memorial",
+    ],
+  },
+  {
+    name: "Indoor Recreation",
+    description:
+      "Spend time enjoying relaxing recreational activities in an indoor facility.",
+    image: "images/indoor-recreation.jpg",
+    weather: ["sunny", "cloudy", "rainy"],
+    placeCategories: [
+      "sport.sports_centre",
+      "sport.sports_hall",
+      "entertainment.bowling_alley",
+    ],
+  },
+  {
+    name: "Indoor Study Session",
+    description:
+      "Spend a productive and peaceful time studying or reading in a quiet indoor space.",
+    image: "images/study-session.jpg",
+    weather: ["sunny", "cloudy", "rainy"],
+    placeCategories: ["education.library"],
+  },
+  {
+    name: "Botanical Garden Visit",
+    description:
+      "Explore beautiful gardens and appreciate different plant species and flowers.",
+    image: "images/botanical-garden.jpg",
+    weather: ["sunny", "cloudy"],
+    placeCategories: ["leisure.park"],
+  },
+  {
+    name: "Birdwatching Adventure",
+    description:
+      "Observe different bird species and appreciate the wildlife in natural surroundings.",
+    image: "images/birdwatching.jpg",
+    weather: ["sunny", "cloudy"],
+    placeCategories: ["natural.forest"],
+  },
+  {
+    name: "Nature Photography Walk",
+    description:
+      "Capture scenic landscapes, plants, and beautiful natural surroundings.",
+    image: "images/nature-photography.jpg",
+    weather: ["sunny", "cloudy"],
+    placeCategories: ["leisure.park", "natural.mountain", "natural.forest"],
+  },
+  {
+    name: "Scenic Viewpoint Exploration",
+    description:
+      "Discover scenic viewpoints and enjoy beautiful views of the surrounding landscape.",
+    image: "images/scenic-viewpoint.jpg",
+    weather: ["sunny", "cloudy"],
+    placeCategories: ["tourism.attraction.viewpoint"],
+  },
+  {
+    name: "Heritage Landmark Tour",
+    description:
+      "Explore historical landmarks and appreciate local architecture and heritage.",
+    image: "images/heritage-landmark.jpg",
+    weather: ["sunny", "cloudy"],
+    placeCategories: ["tourism.sights.memorial"],
+  },
+  {
+    name: "Local Market Shopping",
+    description:
+      "Discover local products, fresh goods, and interesting items from nearby markets.",
+    image: "images/local-market.jpg",
+    weather: ["sunny", "cloudy"],
+    placeCategories: ["commercial.marketplace"],
+  },
+  {
+    name: "Food Court Discovery",
+    description:
+      "Explore different food stalls and discover a variety of local dishes.",
+    image: "images/food-court.jpg",
+    weather: ["sunny", "cloudy", "rainy"],
+    placeCategories: ["catering.food_court"],
+  },
+  {
+    name: "Café Study Break",
+    description:
+      "Enjoy refreshments and take a relaxing break in a nearby café.",
+    image: "images/cafe-study.jpg",
+    weather: ["sunny", "cloudy", "rainy"],
+    placeCategories: ["catering.cafe"],
+  },
+  {
+    name: "Bowling Challenge",
+    description:
+      "Enjoy a friendly bowling game and practice your bowling skills.",
+    image: "images/bowling.jpg",
+    weather: ["sunny", "cloudy", "rainy"],
+    placeCategories: ["entertainment.bowling_alley"],
+  },
+  {
+    name: "Arcade Adventure",
+    description:
+      "Discover arcade games and enjoy an entertaining indoor gaming experience.",
+    image: "images/arcade.jpg",
+    weather: ["sunny", "cloudy", "rainy"],
+    placeCategories: ["entertainment.amusement_arcade"],
+  },
+  {
+    name: "Indoor Sports Session",
+    description:
+      "Enjoy recreational sports and physical activities in an indoor sports facility.",
+    image: "images/indoor-sports.jpg",
+    weather: ["sunny", "cloudy", "rainy"],
+    placeCategories: ["sport.sports_hall"],
+  },
+  {
+    name: "Creative Art Session",
+    description:
+      "Explore your creativity through drawing, painting, and other artistic activities.",
+    image: "images/creative-art.jpg",
+    weather: ["sunny", "cloudy", "rainy"],
+    placeCategories: ["commercial.hobby.art"],
+  },
+  {
+    name: "Community Center Visit",
+    description:
+      "Explore local community spaces and discover their available facilities.",
+    image: "images/community-center.jpg",
+    weather: ["sunny", "cloudy", "rainy"],
+    placeCategories: ["activity.community_center"],
+  },
+  {
+    name: "Art Exhibition Exploration",
+    description:
+      "Appreciate paintings, creative displays, and artistic exhibitions.",
+    image: "images/art-exhibition.jpg",
+    weather: ["sunny", "cloudy", "rainy"],
+    placeCategories: ["entertainment.culture.gallery"],
+  },
+  {
+    name: "Cultural Arts Exploration",
+    description:
+      "Discover local arts, cultural displays, and creative traditions.",
+    image: "images/cultural-arts.jpg",
+    weather: ["sunny", "cloudy", "rainy"],
+    placeCategories: ["entertainment.culture.arts_centre"],
+  },
+  {
+    name: "Archaeological Site Exploration",
+    description:
+      "Learn about historical places and explore archaeological landmarks.",
+    image: "images/archaeological-site.jpg",
+    weather: ["sunny", "cloudy"],
+    placeCategories: ["tourism.sights.archaeological_site"],
+  },
+  {
+    name: "National Park Exploration",
+    description:
+      "Discover protected natural areas and appreciate their scenic surroundings.",
+    image: "images/national-park.jpg",
+    weather: ["sunny", "cloudy"],
+    placeCategories: ["national_park"],
+  },
+  {
+    name: "Hobby and Games Discovery",
+    description:
+      "Explore hobby shops and discover different games and recreational interests.",
+    image: "images/hobby-games.jpg",
+    weather: ["sunny", "cloudy", "rainy"],
+    placeCategories: ["commercial.hobby.games"],
+  },
+  {
+    name: "Recreation Center Visit",
+    description:
+      "Explore recreational facilities and discover available indoor sports activities.",
+    image: "images/recreation-center.jpg",
+    weather: ["sunny", "cloudy", "rainy"],
+    placeCategories: ["sport.sports_centre"],
+  },
+];
+
+
+
+
