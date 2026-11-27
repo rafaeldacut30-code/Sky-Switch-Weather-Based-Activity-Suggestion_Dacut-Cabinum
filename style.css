@@ -384,3 +384,108 @@ body {
 }
 
 
+/* 10. SUGGESTED ACTIVITIES */
+
+.activities-section {
+    margin-top: 30px;
+}
+
+/* GREEN BOX AROUND ACTIVITIES HEADING */
+
+.activity-heading h2 {
+    display: inline-block;
+    padding: 9px 15px;
+    margin: 0 0 8px;
+    color: #159447;
+    background: #f0faf3;
+    border: 2px solid #20ae59;
+    border-radius: 8px;
+    font-size: 1.3rem;
+}
+
+.activity-heading p {
+    color: #718096;
+    line-height: 1.5;
+    margin-top: 0;
+}
+
+.activity-card {
+    margin-top: 18px;
+    border: 1px solid #e0e7eb;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #ffffff;
+}
+
+.activity-image-placeholder {
+    width: 100%;
+    min-height: 190px;
+    background: #edf7f2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #20ae59;
+}
+
+.activity-image-placeholder span {
+    font-size: 3rem;
+}
+
+.activity-image-placeholder p {
+    font-size: 0.9rem;
+    color: #718096;
+}
+
+.activity-information {
+    padding: 15px;
+}
+
+.activity-information h3 {
+    margin: 0 0 8px;
+}
+
+.activity-information p {
+    color: #718096;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin-bottom: 0;
+}
+
+
+/* 11. ACTIVITY CONTROLS */
+
+.activity-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+#activityCounter {
+    color: #718096;
+    font-size: 0.85rem;
+}
+
+#nextActivityBtn {
+    padding: 11px 18px;
+    border: none;
+    border-radius: 7px;
+    background: #20ae59;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+#nextActivityBtn:hover:not(:disabled) {
+    background: #137c40;
+}
+
+#nextActivityBtn:disabled {
+    background: #a8b8ae;
+    cursor: not-allowed;
+}
+
+
