@@ -374,3 +374,38 @@ async function searchLocation() {
 
 
 
+// ==========================================
+// 11. GET CURRENT WEATHER
+// ==========================================
+
+async function getCurrentWeather(latitude, longitude) {
+  const apiKey = apiKeyInput.value.trim();
+
+  // Validate the OpenWeather API key
+  if (apiKey === "") {
+    throw new Error("Please enter your OpenWeather API key.");
+  }
+
+  // Create OpenWeather API URL
+  const url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=metric&appid=${apiKey}`;
+
+  // Send request
+  const response = await fetch(url);
+
+  if (!response.ok) {
+    if (response.status === 401) {
+      throw new Error("Invalid API key or key not activated yet.");
+    }
+
+    throw new Error(`Weather request failed: ${response.status}`);
+  }
+
+  // Convert response to JSON
+  const data = await response.json();
+
+  return data;
+}
+
+
+
+
