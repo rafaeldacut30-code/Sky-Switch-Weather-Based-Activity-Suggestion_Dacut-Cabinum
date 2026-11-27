@@ -1249,3 +1249,26 @@ function displayCurrentActivity() {
 
 
 
+// ==========================================
+// 20. NEXT ACTIVITY BUTTON
+// ==========================================
+
+// Handle clicks on the Next Activity button
+document
+  .getElementById("nextActivityBtn")
+  .addEventListener("click", function () {
+    if (recommendedActivities.length === 0) {
+      return;
+    }
+
+    // Move to next activity
+    currentActivityIndex++;
+
+    // Return to first activity
+    if (currentActivityIndex >= recommendedActivities.length) {
+      currentActivityIndex = 0;
+    }
+
+    // Display selected activity
+    displayCurrentActivity();
+  });
