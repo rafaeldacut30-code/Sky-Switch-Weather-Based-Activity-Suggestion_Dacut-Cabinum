@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="en">
   <head>
@@ -18,7 +17,11 @@
   </head>
 
   <body>
+
+    
+    <!-- ============================== -->
     <!-- NAVIGATION BAR -->
+    <!-- ============================== -->
     <header class="navbar">
       <a href="#" class="logo">SKY SWITCH</a>
 
@@ -29,14 +32,19 @@
       </nav>
     </header>
 
-    <!-- MAIN WEBSITE CONTENT -->
+
+
+    <!-- ============================== -->
+    <!-- MAIN CONTENT -->
+    <!-- ============================== -->
     <main class="main-layout">
+
       <!-- LEFT COLUMN -->
       <section class="left-column">
-        <!-- API KEY -->
+
+        <!-- API KEY SETTINGS -->
         <div class="api-section">
           <label for="apiKey">OpenWeather API Key</label>
-
           <input
             type="password"
             id="apiKey"
@@ -45,7 +53,6 @@
           />
 
           <label for="geoapifyKey">Geoapify API Key</label>
-
           <input
             type="password"
             id="geoapifyKey"
@@ -56,7 +63,7 @@
 
         <!-- LOCATION SEARCH -->
         <div class="location-section">
-          <label for="locationInput"> Search Location </label>
+          <label for="locationInput">Search Location</label>
 
           <div class="search-controls">
             <input
@@ -68,7 +75,9 @@
             <button id="searchBtn" type="button">Search</button>
           </div>
 
-          <p id="locationMessage">Search for a Philippine location.</p>
+          <p id="locationMessage">
+            Search for a Philippine location.
+          </p>
 
           <!-- LOCATION SEARCH RESULTS -->
           <div id="locationResults" class="location-results"></div>
@@ -77,13 +86,14 @@
         <!-- INTERACTIVE MAP -->
         <section id="map-section" class="map-section">
           <h2>Location Map</h2>
-
           <div id="map"></div>
         </section>
+
       </section>
 
       <!-- RIGHT COLUMN -->
       <section class="right-column">
+
         <!-- WEATHER SECTION -->
         <section id="weather-section" class="weather-section">
           <h2>Current Weather</h2>
@@ -94,7 +104,6 @@
 
             <div class="weather-information">
               <h3>Waiting for location</h3>
-
               <p class="temperature">--°C</p>
 
               <p class="weather-description">
@@ -121,39 +130,49 @@
             </div>
           </div>
 
-          <!-- FORECAST -->
+          <!-- WEATHER FORECAST -->
           <div class="forecast-section">
             <h3>Weather Forecast</h3>
 
             <div id="forecastDetails" class="forecast-list">
               <p class="empty-message">
                 Forecast information will appear after searching for a location.
-              </p >
+              </p>
             </div>
           </div>
         </section>
 
+
+
+        <!-- ============================== -->
         <!-- ACTIVITY RECOMMENDATIONS -->
+        <!-- ============================== -->
         <section id="activities-section" class="activities-section">
+
           <div class="activity-heading">
             <h2>Suggested Activities</h2>
-
             <p>Based on your location and weather.</p>
           </div>
 
-          <!-- ONE ACTIVITY AT A TIME -->
+          <!-- ACTIVITY CARD -->
           <div id="activityCard" class="activity-card">
-            <div id="activityImageContainer" class="activity-image-placeholder">
-              <span>🧭</span>
 
+            <!-- ACTIVITY IMAGE -->
+            <div
+              id="activityImageContainer"
+              class="activity-image-placeholder"
+            >
+              <span>🧭</span>
               <p>Your next activity will appear here.</p>
             </div>
 
+            <!-- ACTIVITY INFORMATION -->
             <div class="activity-information">
               <h3 id="activityName">Discover an activity</h3>
 
-              <!-- Actual nearby place -->
-              <p id="activityPlace">Nearby place will appear here.</p>
+              <p id="activityPlace">
+                Nearby place will appear here.
+              </p>
 
               <p id="activityDescription">
                 Search for a location to receive activity recommendations.
@@ -163,27 +182,37 @@
 
           <!-- ACTIVITY NAVIGATION -->
           <div class="activity-controls">
-            <span id="activityCounter"> 0 of 0 activities </span>
+            <span id="activityCounter">0 of 0 activities</span>
 
             <button id="nextActivityBtn" type="button" disabled>
               Next Activity →
             </button>
           </div>
-        </section>
 
+        </section>
       </section>
     </main>
 
+
+
+    <!-- ============================== -->
     <!-- FOOTER -->
+    <!-- ============================== -->
     <footer>
       <p>SKY SWITCH</p>
-      <span> Discover activities that match your weather. </span>
+      <span>Discover activities that match your weather.</span>
     </footer>
 
-    <!-- LEAFLET JAVASCRIPT -->
+
+
+    <!-- ============================== -->
+    <!-- JAVASCRIPT LIBRARIES -->
+    <!-- ============================== -->
+
+    <!-- Leaflet JavaScript -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-    <!-- CUSTOM JAVASCRIPT -->
+    <!-- Custom JavaScript -->
     <script src="script.js"></script>
   </body>
 </html>
